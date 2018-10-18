@@ -4,5 +4,8 @@ image:
 build:
   project: Trumpf.Coparoo.Desktop.sln
 
+configuration:
+ - Release
+
 before_build:
 - nuget restore
