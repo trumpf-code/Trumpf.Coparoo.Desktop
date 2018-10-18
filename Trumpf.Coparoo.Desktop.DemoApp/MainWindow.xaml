@@ -1,0 +1,14 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:demoapp="clr-namespace:Trumpf.Coparoo.Desktop.DemoApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Button x:Name="HelloButton" Content="Before Click" HorizontalAlignment="Left" Margin="169,203,0,0" VerticalAlignment="Top" Width="120" Click="HelloButton_Click" Height="57"/>
+        <Button x:Name="ResetButton" Content="Reset" HorizontalAlignment="Left" Margin="377,224,0,0" VerticalAlignment="Top" Width="75" Click="Reset_Click_1"/>
+        <demoapp:MyButton x:Name="MyResetButton" Content="MyReset" HorizontalAlignment="Left" Margin="377,133,0,0" VerticalAlignment="Top" Width="75" Click="Reset_Click_1"/>
+    </Grid>
+</Window>

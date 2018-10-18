@@ -1,0 +1,8 @@
+image:
+- Visual Studio 2017
+
+build:
+  project: Trumpf.Coparoo.Desktop.sln
+
+before_build:
+- nuget restore
