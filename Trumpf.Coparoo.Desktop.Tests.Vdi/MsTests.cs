@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if DEBUG
 namespace VDI.Tests
 {
     using System;
@@ -61,3 +62,4 @@ namespace VDI.Tests
             => new VDIWebPage().WritePdfTree();
     }
 }
+#endif

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if DEBUG
 namespace VDI.Tests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,3 +39,4 @@ namespace VDI.Tests
         }
     }
 }
+#endif

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if DEBUG
 namespace Trumpf.Coparoo.Desktop.DemoApp.Tests
 {
     using System;
@@ -103,3 +104,4 @@ namespace Trumpf.Coparoo.Desktop.DemoApp.Tests
         }
     }
 }
+#endif
