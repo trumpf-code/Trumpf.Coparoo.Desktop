@@ -1,12 +1,12 @@
 # Trumpf.Coparoo.Desktop Library for .NET 
-![logo640]
+![logo]
 [![appVeyorBuildStatus]](https://ci.appveyor.com/project/trumpf-code/trumpf-coparoo-desktop)
 
 ## Description
 *Trumpf.Coparoo.Desktop is a .NET library for C# that helps you write fast, maintainable, robust and fluent TestLeft-driven UI tests based on the **co**ntrol/**pa**ge/**ro**ot-**o**bject (Coparoo) pattern.*
 
 The library supports all kinds of UI and UI-automation technologies including `WPF`, `WinForms`, `Web` and `UIA`.
-In order to run tests you must ensure that the commercial [SmartBear's TestLeft®](https://smartbear.com/product/testleft) product is installed (free trials are available).
+In order to run tests you must ensure that the commercial [SmartBear's TestLeftÂ®](https://smartbear.com/product/testleft) product is installed (free trials are available).
 For building test projects, e.g. on CI build agents, technically, no license or installation is required.
 
 The following sign-in/out test scenario illustrates how the framework facilitates writing, e.g., a Web test in a "natural" way:
@@ -58,7 +58,7 @@ Ideas and contributions by many more including
 - Igor Mikhalev / *Trumpf Laser Marking Systems AG, Schweiz*
 - Thanikaivel Natarajan / *India Metamation Software P. Ltd., India*
 - Nol Zefaj, Nils Engelbach, Phi Dang, Mattanja Kern, Felix Eisele / *AXOOM GmbH, Karlsruhe*
-- Manuel Pfemeter / *AIT – Applied Information Technologies GmbH & Co. KG, Stuttgart*
+- Manuel Pfemeter / *AIT â€“ Applied Information Technologies GmbH & Co. KG, Stuttgart*
 - Marie Jeutter / *Hochschule Karlsruhe*
 
 ## License
@@ -68,5 +68,5 @@ Licensed under the [Apache License Version 2.0](LICENSE) License.
 
 Coparoo uses the [Stashbox](https://github.com/z4kn4fein/stashbox) dependency injection framework (MIT license) by Peter Csajtai, and SmartBear's TestLeft package from https://www.nuget.org/packages/SmartBear.TestLeft; see term of use: <https://smartbear.com/terms-of-use>.
 
-[logo640]: ./Resources/logo640.png "coparoo dektop logo"
+[logo]: ./Resources/logo.png "coparoo dektop logo"
 [appVeyorBuildStatus]: https://ci.appveyor.com/api/projects/status/github/trumpf-code/Trumpf.Coparoo.Desktop "Build Status (AppVeyor)"
