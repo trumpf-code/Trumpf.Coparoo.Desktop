@@ -71,8 +71,8 @@ namespace Trumpf.Coparoo.Desktop.Core
                     ? controlTypesCache.Where(e => toResolve.IsAssignableFrom(e)).ToArray()
                     : controlTypesCache
                         .Where(e => e.GetTypeInfo().GenericTypeParameters.Length == toResolve.GenericTypeArguments.Length)
-                        .Select(e => e.MakeGenericType(toResolve.GenericTypeArguments))
-                        .Where(e => toResolve.IsAssignableFrom(e))
+                        .Select(candidateType => TryResolve(candidateType, toResolve.GenericTypeArguments))
+                        .Where(e => e != null && toResolve.IsAssignableFrom(e))
                         .ToArray();
 
                 if (!matches.Any() && !retryOnce)
@@ -98,6 +98,18 @@ namespace Trumpf.Coparoo.Desktop.Core
             }
 
             return result;
+        }
+
+        private static Type TryResolve(Type candidateType, Type[] genericTypeArguments)
+        {
+            try
+            {
+                return candidateType.MakeGenericType(genericTypeArguments);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
