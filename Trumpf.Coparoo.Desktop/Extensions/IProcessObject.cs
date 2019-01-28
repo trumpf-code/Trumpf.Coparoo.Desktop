@@ -35,10 +35,11 @@ namespace Trumpf.Coparoo.Desktop.Extensions
 
         private static readonly Predicate<Exception> defaultRetryCondition =
                 e =>
-                    (e.Message.Contains("No more instances can be launched at the moment")) ||
-                    (e.Message.Contains("Error code: 127")) ||
-                    (e.Message.Contains("The server committed a protocol violation")) ||
-                    (e.Message.Contains("The process TestExecute started, but the REST server did not start"));
+                    e.Message.Contains("No more instances can be launched at the moment") ||
+                    e.Message.Contains("Error code: 127") ||
+                    e.Message.Contains("The server committed a protocol violation") ||
+                    e.Message.Contains("The process TestExecute started, but the REST server did not start")
+                ;
 
         private static readonly Func<IDriver> defaultDriverCreator = () => new LocalDriver();
 
@@ -57,7 +58,7 @@ namespace Trumpf.Coparoo.Desktop.Extensions
             retryInterval = retryInterval != default(TimeSpan) ? retryInterval : TimeSpan.FromMinutes(1);
 
             StopServiceAndKillSmartbearProcesses();
-            Do(() => { processObject.Driver = driverCreator(); }, defaultRetryCondition, StopServiceAndKillSmartbearProcesses, retryInterval, maxAttempts);
+            Do(() => { processObject.Driver = driverCreator(); }, retryOnCondition, StopServiceAndKillSmartbearProcesses, retryInterval, maxAttempts);
         }
 
         /// <summary>
@@ -83,8 +84,15 @@ namespace Trumpf.Coparoo.Desktop.Extensions
             ServiceController service = new ServiceController(ServiceName);
             if (service.Status != ServiceControllerStatus.Stopped && service.Status != ServiceControllerStatus.StopPending)
             {
-                service.Stop();
-                service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
+                try
+                {
+                    service.Stop();
+                    service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
+                }
+                catch (InvalidOperationException)
+                {
+                    // service is not available
+                }
             }
 
             // kill remaining smartbear processes
