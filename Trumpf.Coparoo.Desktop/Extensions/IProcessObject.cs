@@ -16,6 +16,7 @@ namespace Trumpf.Coparoo.Desktop.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
     using System.ServiceProcess;
@@ -81,18 +82,26 @@ namespace Trumpf.Coparoo.Desktop.Extensions
         private static void StopServiceAndKillSmartbearProcesses()
         {
             // stop test complete service
-            ServiceController service = new ServiceController(ServiceName);
-            if (service.Status != ServiceControllerStatus.Stopped && service.Status != ServiceControllerStatus.StopPending)
+            try
             {
-                try
+                ServiceController service = new ServiceController(ServiceName);
+                if (service.Status != ServiceControllerStatus.Stopped && service.Status != ServiceControllerStatus.StopPending)
                 {
                     service.Stop();
                     service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
                 }
-                catch (InvalidOperationException)
-                {
-                    // service is not available
-                }
+            }
+            catch (InvalidOperationException)
+            {
+                // service is not available
+            }
+            catch (Win32Exception)
+            {
+                // system API failure
+            }
+            catch (ArgumentException)
+            {
+                // invalid name
             }
 
             // kill remaining smartbear processes

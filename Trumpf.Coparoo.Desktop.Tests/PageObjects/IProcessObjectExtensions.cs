@@ -38,7 +38,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
             }
             catch (Exception)
             {
-                Assert.AreEqual(tryCnt, 6);
+                Assert.AreEqual(6, tryCnt);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
             }
             catch (Exception)
             {
-                Assert.AreEqual(tryCnt, 6);
+                Assert.AreEqual(6, tryCnt);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
             }
             catch (Exception)
             {
-                Assert.AreEqual(tryCnt, 1);
+                Assert.AreEqual(1, tryCnt);
             }
         }
     }
