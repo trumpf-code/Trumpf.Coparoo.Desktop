@@ -93,7 +93,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
                     var configuration = root.Configuration;
                     configuration
                         .DependencyRegistrator
-                        .RegisterType(classWithTests);
+                        .Register(classWithTests);
 
                     instance = (IPageObjectTestsInternal)configuration.resolver.Resolve(classWithTests);
                 }

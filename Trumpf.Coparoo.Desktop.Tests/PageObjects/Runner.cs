@@ -33,7 +33,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
                 result
                     .Configuration
                     .DependencyRegistrator
-                    .RegisterType<IDontKnow, DontKnow>();
+                    .Register<IDontKnow, DontKnow>();
 
                 return result;
             }
