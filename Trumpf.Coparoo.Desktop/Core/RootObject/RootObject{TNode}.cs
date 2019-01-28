@@ -104,7 +104,12 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The root object.</returns>
         public static TRootObject Resolve<TRootObject>() where TRootObject : IRootObject
         {
-            var matches = PageTests.Locate.Types.Where(e => !e.IsAbstract && e.GetConstructor(Type.EmptyTypes) != null && typeof(TRootObject).IsAssignableFrom(e)).ToArray();
+            var matches = PageTests
+                .Locate
+                .Types
+                .Where(e => !e.IsAbstract && typeof(TRootObject).IsAssignableFrom(e) && IsDefaultConstructible(e))
+                .ToArray();
+
             if (!matches.Any())
             {
                 throw new ProcessObjectNotFoundException<TRootObject>();
@@ -225,6 +230,19 @@ namespace Trumpf.Coparoo.Desktop.Core
         IAwait<T> IRootObjectInternal.Await<T>(Func<T> function, string name)
         {
             return new Await<T>(function, name, GetType(), () => Configuration.WaitTimeout, () => Configuration.PositiveWaitTimeout, () => Configuration.ShowWaitingDialog);
+        }
+
+        private static bool IsDefaultConstructible(Type e)
+        {
+            try
+            {
+                return e.GetConstructor(Type.EmptyTypes) != null;
+            }
+            catch (FileNotFoundException exception)
+            {
+                Trace.WriteLine($"Could not check type '{e.GetType().FullName}' for a default constructor: {exception.Message}");
+                return false;
+            }
         }
     }
 }
