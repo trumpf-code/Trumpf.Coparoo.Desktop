@@ -74,7 +74,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.DialogWaitFor
                 }
                 catch (DialogWaitForTimeoutException e)
                 {
-                    Assert.AreEqual("Timout of " + @long.TotalSeconds.ToString("0.00") + " seconds exceeded when waiting for 'Order list is empty'", e.Message);
+                    Assert.AreEqual("Timeout of " + @long.TotalSeconds.ToString("0.00") + " seconds exceeded when waiting for 'Order list is empty'", e.Message);
                     throw;
                 }
             });
