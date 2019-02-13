@@ -33,7 +33,7 @@ namespace Trumpf.Coparoo.Desktop.Exceptions
         /// </summary>
         /// <param name="expectedCondition">The message that describes the error.</param>
         /// <param name="timeout">The timeout.</param>
-        public DialogWaitForTimeoutException(string expectedCondition, TimeSpan timeout) : base("Timout of " + timeout.TotalSeconds.ToString("0.00") + " seconds exceeded when waiting for '" + expectedCondition + "'")
+        public DialogWaitForTimeoutException(string expectedCondition, TimeSpan timeout) : base("Timeout of " + timeout.TotalSeconds.ToString("0.00") + " seconds exceeded when waiting for '" + expectedCondition + "'")
         {
         }
 
