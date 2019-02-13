@@ -17,6 +17,7 @@ namespace Trumpf.Coparoo.Desktop.Waiting
     using System;
     using System.Diagnostics;
     using System.Drawing;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -520,7 +521,7 @@ namespace Trumpf.Coparoo.Desktop.Waiting
             state = State.init;
             this.positiveTimeout = positiveTimeout;
             this.negativeTimeout = negativeTimeout;
-            uic = new DialogView(negativeTimeout != TimeSpan.MaxValue, positiveTimeout != TimeSpan.MaxValue && positiveTimeout != TimeSpan.Zero, clickThrough, function != null, actionText);
+            uic = new DialogView(negativeTimeout != TimeSpan.MaxValue, positiveTimeout != TimeSpan.MaxValue && positiveTimeout != TimeSpan.Zero, clickThrough, function != null, actionText, expectationText.Split('\n').Count());
 
             // spawn
             var c = new CancellationTokenSource();
@@ -624,7 +625,9 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         private class DialogView
         {
             // create and add dialog components
+            private Label expectedHeaderLabel;
             private Label expectedTextLabel;
+            private Label actionHeaderLabel;
             private Label actionTextLabel;
             private Label valueLabel;
             private Label autoActionGoodLabel;
@@ -643,66 +646,92 @@ namespace Trumpf.Coparoo.Desktop.Waiting
             /// <param name="clickThrough">Whether to enable click-through mode.</param>
             /// <param name="showCurrentValue">Whether to show the current value.</param>
             /// <param name="actionText">The action text.</param>
-            public DialogView(bool showAutoActionBadLabel, bool showAutoActionGoodLabel, bool clickThrough, bool showCurrentValue, string actionText)
+            /// <param name="expectationLines">The expectation lines.</param>
+            public DialogView(bool showAutoActionBadLabel, bool showAutoActionGoodLabel, bool clickThrough, bool showCurrentValue, string actionText, int expectationLines)
             {
                 this.clickThrough = clickThrough;
                 this.showCurrentValue = showCurrentValue;
 
                 const int WIDTH = 500;
-                const int SPACE = 30;
+                const int SPACE = 10;
+                const int BUTTON_HEIGHT = 60;
                 const int ITOP = 20;
                 const int LEFT = 30;
                 int top = ITOP;
 
                 var font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
+                var headerFont = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
 
                 // dialog
                 dialog = new Form() { Width = LEFT + WIDTH, FormBorderStyle = FormBorderStyle.None, ShowInTaskbar = false, Opacity = 0.8, StartPosition = FormStartPosition.Manual, Visible = false, TopMost = false };
 
-                // expected text
-                dialog.Controls.Add(expectedTextLabel = new Label() { Left = LEFT, Top = top, Width = WIDTH, Font = font });
+                if (!clickThrough)
+                {
+                    var dialogWidth = dialog.Width;
 
-                // prepare label for two text lines.
-                top += expectedTextLabel.Height;
-                expectedTextLabel.Height = 2 * expectedTextLabel.Height;
+                    top += SPACE;
+
+                    // positive button
+                    dialog.Controls.Add(positiveButton = new Button() { Left = dialogWidth / 2, Height = BUTTON_HEIGHT, Width = dialogWidth / 2, Top = top, DialogResult = DialogResult.OK, Text = "Positive", FlatStyle = FlatStyle.Flat, Font = font });
+
+                    // negative button
+                    dialog.Controls.Add(negativeButton = new Button() { Left = 0, Height = BUTTON_HEIGHT, Width = dialogWidth / 2, Top = top, DialogResult = DialogResult.Cancel, Text = "Negative", FlatStyle = FlatStyle.Flat, BackColor = Color.Red, Font = font });
+
+                    top += BUTTON_HEIGHT;
+                    top += SPACE;
+                }
+
+                // expected header
+                dialog.Controls.Add(expectedHeaderLabel = new Label() { Left = LEFT, Top = top, Width = WIDTH, Font = headerFont, Height = headerFont.Height, Text = "Expectation" });
+                top += expectedHeaderLabel.Height;
+
+                // expected text
+                dialog.Controls.Add(expectedTextLabel = new Label() { Left = LEFT, Top = top, Width = WIDTH, Font = font, Height = font.Height });
+                top += expectationLines * expectedTextLabel.Height;
+                expectedTextLabel.Height = expectationLines * expectedTextLabel.Height;
+                expectedTextLabel.AutoSize = true;
 
                 if (actionText != null)
                 {
-                    dialog.Controls.Add(actionTextLabel = new Label() { Left = LEFT, Top = top += SPACE, Width = WIDTH, Font = font });
+                    top += SPACE;
+
+                    // action header
+                    dialog.Controls.Add(actionHeaderLabel = new Label() { Left = LEFT, Top = top, Width = WIDTH, Font = headerFont, Height = headerFont.Height, Text = "Action" });
+                    top += actionHeaderLabel.Height;
+
+                    // action text
+                    dialog.Controls.Add(actionTextLabel = new Label() { Left = LEFT, Top = top, Width = WIDTH, Font = font, Height = font.Height });
+                    var actionLines = actionText.Split('\n').Count();
+                    top += actionLines * actionTextLabel.Height;
+                    actionTextLabel.Height = actionLines * actionTextLabel.Height;
+                    actionTextLabel.AutoSize = true;
                 }
 
                 if (showCurrentValue)
                 {
-                    dialog.Controls.Add(valueLabel = new Label() { Left = LEFT, Top = top += SPACE, Width = WIDTH, Font = font });
+                    top += SPACE;
+                    dialog.Controls.Add(valueLabel = new Label() { Left = LEFT, Top = top, Width = WIDTH, Font = font, Height = font.Height });
+                    top += valueLabel.Height;
                 }
 
                 // good timeout label
                 if (showAutoActionGoodLabel)
                 {
-                    dialog.Controls.Add(autoActionGoodLabel = new Label() { Left = LEFT, Top = top += SPACE, Width = WIDTH, Font = font });
+                    top += SPACE;
+                    dialog.Controls.Add(autoActionGoodLabel = new Label() { Left = LEFT, Top = top, Width = WIDTH, Font = font, Height = font.Height });
+                    top += autoActionGoodLabel.Height;
                 }
 
                 // bad timeout label
                 if (showAutoActionBadLabel)
                 {
-                    dialog.Controls.Add(autoActionBadLabel = new Label() { Left = LEFT, Top = top += SPACE, Width = WIDTH, Font = font });
-                }
-
-                // positive button
-                if (!clickThrough)
-                {
-                    var dialogWidth = dialog.Width;
-
-                    dialog.Controls.Add(positiveButton = new Button() { Left = dialogWidth / 2, Height = 2 * SPACE, Width = dialogWidth / 2, Top = top += SPACE, DialogResult = DialogResult.OK, Text = "Positive", FlatStyle = FlatStyle.Flat, Font = font });
-
-                    // negative button
-                    dialog.Controls.Add(negativeButton = new Button() { Left = 0, Height = 2 * SPACE, Width = dialogWidth / 2, Top = top, DialogResult = DialogResult.Cancel, Text = "Negative", FlatStyle = FlatStyle.Flat, BackColor = Color.Red, Font = font });
-
                     top += SPACE;
+                    dialog.Controls.Add(autoActionBadLabel = new Label() { Left = LEFT, Top = top, Width = WIDTH, Font = font, Height = font.Height });
+                    top += autoActionBadLabel.Height;
                 }
 
                 // set dialog size
-                dialog.Height = top + ITOP + SPACE;
+                dialog.Height = top + ITOP;
                 dialog.Location = new Point(Screen.PrimaryScreen.Bounds.Width - dialog.Width, 0);
             }
 
@@ -727,7 +756,7 @@ namespace Trumpf.Coparoo.Desktop.Waiting
             /// </summary>
             public string ExpectationText
             {
-                set { Invoke(() => expectedTextLabel.Text = "Expectation: " + value); }
+                set { Invoke(() => expectedTextLabel.Text = value); }
             }
 
             /// <summary>
@@ -735,7 +764,7 @@ namespace Trumpf.Coparoo.Desktop.Waiting
             /// </summary>
             public string ActionText
             {
-                set { Invoke(() => actionTextLabel.Text = "Action: " + value); }
+                set { Invoke(() => actionTextLabel.Text = value); }
             }
 
             /// <summary>
