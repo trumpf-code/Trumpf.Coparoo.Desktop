@@ -49,4 +49,8 @@
   </ItemGroup>
 
   <!-- signing -->
+  <Target Name="PostBuildTarget" AfterTargets="AfterBuild">
+    <Exec Condition="Exists('..\..\Keys\Key.snk')" Command="echo KEY FOUND"/>
+    <Exec Condition="!Exists('..\..\Keys\Key.snk')" Command="echo NO KEY FOUND"/>
+  </Target>
 </Project>
