@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+// Copyright 2016, 2017, 2018 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@ namespace Trumpf.Coparoo.Desktop.PageTests
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
 
@@ -55,7 +54,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// <returns>This page object.</returns>
         public static IPageObject TestBottomUp(this IPageObject source, Predicate<MethodInfo> methodFilter = null, Predicate<IPageObjectTests> pageTestClassFilter = null)
         {
-            Trace.WriteLine("Run tests for " + source.GetType().FullName);
+            GetRoot(source).Configuration.LogAction("Run tests for " + source.GetType().FullName);
 
             // run tests for every child
             foreach (var child in source.Children())
@@ -83,14 +82,15 @@ namespace Trumpf.Coparoo.Desktop.PageTests
 
             foreach (Type classWithTests in source.TestClasses())
             {
-                Trace.WriteLine("Found page test class for current class " + source.GetType().ToString() + ": " + classWithTests.ToString());
 
                 // create and initialize page test class
                 IPageObjectTestsInternal instance;
-                var root = ((IUIObjectInternal)source).Root;
+                IRootObject root = GetRoot(source);
+                var configuration = root.Configuration;
+                configuration.LogAction("Found page test class for current class " + source.GetType().ToString() + ": " + classWithTests.ToString());
+
                 try
                 {
-                    var configuration = root.Configuration;
                     configuration
                         .DependencyRegistrator
                         .Register(classWithTests);
@@ -108,22 +108,22 @@ namespace Trumpf.Coparoo.Desktop.PageTests
                 // check if tests should be executed according to the page test filter
                 if (pageTestClassFilter(instance))
                 {
-                    Trace.WriteLine("Page test class filter returned true; running tests...");
+                    configuration.LogAction("Page test class filter returned true; running tests...");
                 }
                 else
                 {
-                    Trace.WriteLine("Page test class filter returned true; skipping tests...");
+                    configuration.LogAction("Page test class filter returned true; skipping tests...");
                     continue;
                 }
 
                 // check if tests should be executed according to the runnable predicate
                 if (instance.Runnable)
                 {
-                    Trace.WriteLine("Runnable returned true; running tests...");
+                    configuration.LogAction("Runnable returned true; running tests...");
                 }
                 else
                 {
-                    Trace.WriteLine("Runnable returned false; skipping tests");
+                    configuration.LogAction("Runnable returned false; skipping tests");
                     continue;
                 }
 
@@ -136,15 +136,15 @@ namespace Trumpf.Coparoo.Desktop.PageTests
                 int testMethodsCount = matchingMethodsByLine.Count();
                 if (testMethodsCount > 0)
                 {
-                    Trace.WriteLine("Found " + testMethodsCount + " test methods");
+                    configuration.LogAction("Found " + testMethodsCount + " test methods");
                 }
                 else
                 {
-                    Trace.WriteLine("No test method found; skipping test class");
+                    configuration.LogAction("No test method found; skipping test class");
                     continue;
                 }
 
-                Trace.WriteLine($"Execute function {nameof(IPageObjectTests.BeforeFirstTest)}...");
+                configuration.LogAction($"Execute function {nameof(IPageObjectTests.BeforeFirstTest)}...");
                 instance.BeforeFirstTest();
 
                 // check if tests should be executed
@@ -154,7 +154,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
                 }
                 else
                 {
-                    Trace.WriteLine("Tests are ready to run...");
+                    configuration.LogAction("Tests are ready to run...");
                 }
 
                 // create class statistics object
@@ -167,15 +167,15 @@ namespace Trumpf.Coparoo.Desktop.PageTests
                     {
                         if (instance.IsTestRunnable(testMethod))
                         {
-                            Test(testClassStatistic, instance, testMethod);
+                            Test(testClassStatistic, instance, testMethod, configuration.LogAction);
                         }
                         else
                         {
-                            Trace.WriteLine($"Skipping test: '{nameof(instance.IsTestRunnable)}' returned false for test method '{testMethod.Name}'.");
+                            configuration.LogAction($"Skipping test: '{nameof(instance.IsTestRunnable)}' returned false for test method '{testMethod.Name}'.");
                         }
                     }
 
-                    Trace.WriteLine($"Execute function {nameof(IPageObjectTests.AfterLastTest)}...");
+                    configuration.LogAction($"Execute function {nameof(IPageObjectTests.AfterLastTest)}...");
                     instance.AfterLastTest();
                 }
                 finally
@@ -186,6 +186,11 @@ namespace Trumpf.Coparoo.Desktop.PageTests
             }
 
             return source;
+        }
+
+        private static IRootObject GetRoot(IPageObject source)
+        {
+            return ((IUIObjectInternal)source).Root;
         }
 
         /// <summary>
@@ -227,15 +232,9 @@ namespace Trumpf.Coparoo.Desktop.PageTests
             return pageObjectStatistic[t];
         }
 
-        /// <summary>
-        /// Run tests and collect statistics.
-        /// </summary>
-        /// <param name="testClassStatistic">The test class statistics.</param>
-        /// <param name="instance">The instance.</param>
-        /// <param name="testMethod">The test method.</param>
-        private static void Test(TestClassStatistic testClassStatistic, IPageObjectTests instance, MethodInfo testMethod)
+        private static void Test(TestClassStatistic testClassStatistic, IPageObjectTests instance, MethodInfo testMethod, Action<string> logAction)
         {
-            Trace.WriteLine("Executing page test <" + testMethod.Name + ">");
+            logAction("Executing page test <" + testMethod.Name + ">");
 
             var startTimeForCurrentIteration = DateTime.Now;
             try
@@ -250,14 +249,14 @@ namespace Trumpf.Coparoo.Desktop.PageTests
             {
                 Exception exceptionForTrace = e;
 
-                if (e is System.Reflection.TargetInvocationException && e.InnerException != null)
+                if (e is TargetInvocationException && e.InnerException != null)
                 {
                     exceptionForTrace = e.InnerException;
                 }
 
-                Trace.WriteLine(string.Format("Exception in page test {0}: {1}", testMethod.Name, e.Message));
-                Trace.WriteLine(exceptionForTrace.StackTrace);
-                Trace.WriteLine(exceptionForTrace.ToString());
+                logAction(string.Format("Exception in page test {0}: {1}", testMethod.Name, e.Message));
+                logAction(exceptionForTrace.StackTrace);
+                logAction(exceptionForTrace.ToString());
 
                 // add method statistics
                 testClassStatistic += new TestMethodStatistic() { MethodInfo = testMethod, PageType = instance.PageType, Info = e.GetType().Name, Start = startTimeForCurrentIteration, Success = false };
@@ -265,8 +264,8 @@ namespace Trumpf.Coparoo.Desktop.PageTests
                 throw;
             }
 
-            Trace.WriteLine("Page test finished: " + testMethod.Name);
-            Trace.WriteLine("------------------------------------------------------------");
+            logAction("Page test finished: " + testMethod.Name);
+            logAction(string.Empty);
         }
     }
 }
