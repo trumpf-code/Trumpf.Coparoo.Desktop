@@ -139,5 +139,6 @@ namespace Trumpf.Coparoo.Desktop
         {
             get { return logAction ?? (line => System.Diagnostics.Trace.WriteLine(line)); }
             set { logAction = value; }
-        }    }
+        }    
+    }
 }
