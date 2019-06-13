@@ -131,5 +131,13 @@ namespace Trumpf.Coparoo.Desktop
             get { return enableAutoGoto; }
             set { enableAutoGoto = value; }
         }
-    }
+
+        /// <summary>
+        /// Gets or set log action. The default is Trace.WriteLine.
+        /// </summary>
+        public Action<string> LogAction
+        {
+            get { return logAction ?? (line => System.Diagnostics.Trace.WriteLine(line)); }
+            set { logAction = value; }
+        }    }
 }
