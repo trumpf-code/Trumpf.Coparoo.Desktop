@@ -32,6 +32,7 @@ namespace Trumpf.Coparoo.Desktop
         private TimeSpan scrollDetectionTimeout = TimeSpan.FromSeconds(1);
         private bool enableAutoScroll = false;
         private bool enableAutoGoto = false;
+        private Action<string> logAction = null;
         private int nodeSearchDepth = 20;
         private int controlSearchDepth = 20;
         internal StashboxContainer resolver = new StashboxContainer();
