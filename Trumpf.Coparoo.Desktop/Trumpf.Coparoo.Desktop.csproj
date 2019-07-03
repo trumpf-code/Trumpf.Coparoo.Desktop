@@ -21,7 +21,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/trumpf-code/Trumpf.Coparoo.Desktop/master/Resources/logo.png</PackageIconUrl>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -38,8 +38,8 @@
 
   <!-- reference information -->
   <ItemGroup>
-    <PackageReference Include="SmartBear.TestLeft" Version="4.0.308.11" />
-    <PackageReference Include="Stashbox" Version="2.6.8" />
+    <PackageReference Include="SmartBear.TestLeft" Version="4.10.999.11" />
+    <PackageReference Include="Stashbox" Version="2.7.8" />
     <Reference Include="mscorlib" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -50,7 +50,7 @@
 
   <!-- signing -->
   <Target Name="PostBuildTarget" AfterTargets="AfterBuild">
-    <Exec Condition="Exists('..\..\Keys\Key.snk')" Command="echo KEY FOUND"/>
-    <Exec Condition="!Exists('..\..\Keys\Key.snk')" Command="echo NO KEY FOUND"/>
+    <Exec Condition="Exists('..\..\Keys\Key.snk')" Command="echo KEY FOUND" />
+    <Exec Condition="!Exists('..\..\Keys\Key.snk')" Command="echo NO KEY FOUND" />
   </Target>
 </Project>
