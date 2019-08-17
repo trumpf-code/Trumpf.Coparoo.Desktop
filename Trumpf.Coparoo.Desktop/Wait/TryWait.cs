@@ -194,7 +194,7 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         {
             try
             {
-                Wait.UntilStableInternal(function, timeout, retryPause);
+                Wait.UntilStableInternal(function, timeout, retryPause, null);
                 return true;
             }
             catch (TimeoutException)

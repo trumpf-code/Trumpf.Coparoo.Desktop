@@ -30,7 +30,17 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="function">The function which is executed.</param>
         public static void For(Func<bool> function)
         {
-            For(function, TimeSpan.FromSeconds(20));
+            RetryUntilSuccessOrTimeout(function, e => e);
+        }
+
+        /// <summary>
+        /// Waits until a function evaluates to <c>true</c>.
+        /// </summary>
+        /// <param name="function">The function which is executed.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        public static void For(Func<bool> function, string errorMessage)
+        {
+            RetryUntilSuccessOrTimeout(function, e => e, null, null, errorMessage);
         }
 
         /// <summary>
@@ -40,7 +50,18 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="condition">The condition to evaluate.</param>
         public static void For<T>(Func<T> function, Predicate<T> condition)
         {
-            For(function, condition, TimeSpan.FromSeconds(20));
+            RetryUntilSuccessOrTimeout(function, condition);
+        }
+
+        /// <summary>
+        /// Waits until a function evaluates to <c>true</c>.
+        /// </summary>
+        /// <param name="function">The function which is executed.</param>
+        /// <param name="condition">The condition to evaluate.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        public static void For<T>(Func<T> function, Predicate<T> condition, string errorMessage)
+        {
+            RetryUntilSuccessOrTimeout(function, condition, null, null, errorMessage);
         }
 
         /// <summary>
@@ -51,6 +72,17 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         public static void For(Func<bool> function, TimeSpan timeout)
         {
             RetryUntilSuccessOrTimeout(function, e => e, timeout);
+        }
+
+        /// <summary>
+        /// Waits until a function evaluates to <c>true</c>.
+        /// </summary>
+        /// <param name="function">The function which is executed.</param>
+        /// <param name="timeout">The maximum waiting time in milliseconds.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        public static void For(Func<bool> function, TimeSpan timeout, string errorMessage)
+        {
+            RetryUntilSuccessOrTimeout(function, e => e, timeout, null, errorMessage);
         }
 
         /// <summary>
@@ -70,10 +102,35 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="function">The function which is executed.</param>
         /// <param name="condition">The condition to evaluate.</param>
         /// <param name="timeout">The maximum waiting time in milliseconds.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        public static void For<T>(Func<T> function, Predicate<T> condition, TimeSpan timeout, string errorMessage)
+        {
+            RetryUntilSuccessOrTimeout(function, condition, timeout, null, errorMessage);
+        }
+
+        /// <summary>
+        /// Waits until a function evaluates to <c>true</c>.
+        /// </summary>
+        /// <param name="function">The function which is executed.</param>
+        /// <param name="condition">The condition to evaluate.</param>
+        /// <param name="timeout">The maximum waiting time in milliseconds.</param>
         /// <param name="retryPause">Timeout between the condition check rounds.</param>
         public static void For<T>(Func<T> function, Predicate<T> condition, TimeSpan timeout, TimeSpan retryPause)
         {
             RetryUntilSuccessOrTimeout(function, condition, timeout, retryPause);
+        }
+
+        /// <summary>
+        /// Waits until a function evaluates to <c>true</c>.
+        /// </summary>
+        /// <param name="function">The function which is executed.</param>
+        /// <param name="condition">The condition to evaluate.</param>
+        /// <param name="timeout">The maximum waiting time in milliseconds.</param>
+        /// <param name="retryPause">Timeout between the condition check rounds.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        public static void For<T>(Func<T> function, Predicate<T> condition, TimeSpan timeout, TimeSpan retryPause, string errorMessage)
+        {
+            RetryUntilSuccessOrTimeout(function, condition, timeout, retryPause, errorMessage);
         }
 
         /// <summary>
@@ -107,7 +164,18 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="function">The function to test for stabilization.</param>
         public static void UntilStable<T>(Func<T> function) where T : struct
         {
-            UntilStableInternal(function, null, null);
+            UntilStableInternal(function, null, null, null);
+        }
+
+        /// <summary>
+        /// Waits until a function stabilizes.
+        /// </summary>
+        /// <typeparam name="T">The function return type.</typeparam>
+        /// <param name="function">The function to test for stabilization.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        public static void UntilStable<T>(Func<T> function, string errorMessage) where T : struct
+        {
+            UntilStableInternal(function, null, null, errorMessage);
         }
 
         /// <summary>
@@ -118,7 +186,19 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="retryPause">Timeout between the condition check rounds.</param>
         public static void UntilStable<T>(Func<T> function, TimeSpan retryPause) where T : struct
         {
-            UntilStableInternal(function, null, retryPause);
+            UntilStableInternal(function, null, retryPause, null);
+        }
+
+        /// <summary>
+        /// Waits until a function stabilizes.
+        /// </summary>
+        /// <typeparam name="T">The function return type.</typeparam>
+        /// <param name="function">The function to test for stabilization.</param>
+        /// <param name="retryPause">Timeout between the condition check rounds.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        public static void UntilStable<T>(Func<T> function, TimeSpan retryPause, string errorMessage) where T : struct
+        {
+            UntilStableInternal(function, null, retryPause, errorMessage);
         }
 
         /// <summary>
@@ -130,7 +210,7 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="retryPause">Timeout between the condition check rounds.</param>
         public static void UntilStable<T>(Func<T> function, TimeSpan timeout, TimeSpan retryPause) where T : struct
         {
-            UntilStableInternal(function, timeout, retryPause);
+            UntilStableInternal(function, timeout, retryPause, null);
         }
 
         /// <summary>
@@ -140,7 +220,21 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="function">The function to test for stabilization.</param>
         /// <param name="timeout">The maximum waiting time in milliseconds.</param>
         /// <param name="retryPause">Timeout between the condition check rounds.</param>
-        internal static void UntilStableInternal<T>(Func<T> function, TimeSpan? timeout, TimeSpan? retryPause) where T : struct
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        public static void UntilStable<T>(Func<T> function, TimeSpan timeout, TimeSpan retryPause, string errorMessage) where T : struct
+        {
+            UntilStableInternal(function, timeout, retryPause, errorMessage);
+        }
+
+        /// <summary>
+        /// Waits until a function stabilizes.
+        /// </summary>
+        /// <typeparam name="T">The function return type.</typeparam>
+        /// <param name="function">The function to test for stabilization.</param>
+        /// <param name="timeout">The maximum waiting time in milliseconds.</param>
+        /// <param name="retryPause">Timeout between the condition check rounds.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
+        internal static void UntilStableInternal<T>(Func<T> function, TimeSpan? timeout, TimeSpan? retryPause, string errorMessage) where T : struct
         {
             T? last = null;
             Predicate<T> condition = arg =>
@@ -150,7 +244,7 @@ namespace Trumpf.Coparoo.Desktop.Waiting
                     return stable;
                 };
 
-            RetryUntilSuccessOrTimeout(function, condition, timeout, retryPause);
+            RetryUntilSuccessOrTimeout(function, condition, timeout, retryPause, errorMessage);
         }
 
         /// <summary>
@@ -173,8 +267,9 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="condition">The condition.</param>
         /// <param name="timeout">The maximum waiting time in milliseconds.</param>
         /// <param name="retryPause">Timeout between the condition check rounds.</param>
+        /// <param name="errorMessage">Additional error message for the case of timeout.</param>
         /// <typeparam name="T">The type of the variable.</typeparam>
-        internal static T RetryUntilSuccessOrTimeout<T>(Func<T> function, Predicate<T> condition, TimeSpan? timeout = null, TimeSpan? retryPause = null)
+        internal static T RetryUntilSuccessOrTimeout<T>(Func<T> function, Predicate<T> condition, TimeSpan? timeout = null, TimeSpan? retryPause = null, string errorMessage = null)
         {
             timeout = timeout ?? TimeSpan.FromSeconds(20);
             retryPause = retryPause ?? TimeSpan.FromMilliseconds(100);
@@ -193,7 +288,11 @@ namespace Trumpf.Coparoo.Desktop.Waiting
             }
             while (stopwatch.Elapsed < timeout);
 
-            throw new TimeoutException(string.Format("Condition did not turn true within the maximum waiting time period of {0}s; polling results: {1}", timeout.Value.TotalSeconds, string.Join(", ", result.Select(e => e == null ? "null" : e.ToString()))));
+            string exceptionMessage = errorMessage == null ? 
+            $"Condition did not turn true within the maximum waiting time period of {timeout.Value.TotalSeconds}s; polling results: {string.Join(", ", result.Select(e => e == null ? "null" : e.ToString()))}" :
+            $"Condition did not turn true within the maximum waiting time period of {timeout.Value.TotalSeconds}s; Additional error message: {errorMessage}.";
+
+            throw new TimeoutException(exceptionMessage);
         }
     }
 }
