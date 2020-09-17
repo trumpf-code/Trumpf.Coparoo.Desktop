@@ -86,7 +86,14 @@ namespace Trumpf.Coparoo.Desktop.Core
                 }
                 else
                 {
+                    // try to resolve to the lowest base class of all matches
+                    // if matches contains a single type only then that type will be returned
                     result = LowestType(matches);
+
+                    if (!toResolve.IsAssignableFrom(result))
+                    {
+                        throw new AmbiguousControlObjectMatchException(toResolve, matches, result);
+                    }
 
                     if (matches.Count() >= 2)
                     {
@@ -123,6 +130,7 @@ namespace Trumpf.Coparoo.Desktop.Core
 
         /// <summary>
         /// Gets the "lowest" assignable type.
+        /// If one type is passed that will be returned as well.
         /// </summary>
         /// <param name="types">The type.</param>
         /// <returns>The "lowest" type.</returns>
