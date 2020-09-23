@@ -23,7 +23,6 @@
         private class Page : PageObject, IChildOf<Process>
         {
             protected override Search SearchPattern => throw new System.NotImplementedException();
-            public IControlObjectWithTwoImplementations withTwoImplementations => Find<IControlObjectWithTwoImplementations>();
         }
 
         private class FirstImplementation : ControlObject, IControlObjectWithTwoImplementations
