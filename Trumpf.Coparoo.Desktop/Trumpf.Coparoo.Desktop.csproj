@@ -21,7 +21,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/trumpf-code/Trumpf.Coparoo.Desktop/master/Resources/logo.png</PackageIconUrl>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -38,7 +38,7 @@
 
   <!-- reference information -->
   <ItemGroup>
-    <PackageReference Include="SmartBear.TestLeft" Version="4.60.274.11" />
+    <PackageReference Include="SmartBear.TestLeft" Version="4.61.276.11" />
     <PackageReference Include="Stashbox" Version="3.2.4" />
     <Reference Include="mscorlib" />
     <Reference Include="PresentationFramework" />
