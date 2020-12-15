@@ -38,8 +38,8 @@
 
   <!-- reference information -->
   <ItemGroup>
-    <PackageReference Include="SmartBear.TestLeft" Version="4.61.276.11" />
-    <PackageReference Include="Stashbox" Version="3.2.4" />
+    <PackageReference Include="SmartBear.TestLeft" Version="4.10.999.11" />
+    <PackageReference Include="Stashbox" Version="2.7.8" />
     <Reference Include="mscorlib" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
