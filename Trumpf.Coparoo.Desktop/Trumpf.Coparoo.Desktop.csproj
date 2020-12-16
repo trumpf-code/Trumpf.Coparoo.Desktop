@@ -21,7 +21,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
     <PackageIcon>logo.png</PackageIcon>
-    <Version>1.2.1</Version>
+    <Version>1.3.0</Version>
     <RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
