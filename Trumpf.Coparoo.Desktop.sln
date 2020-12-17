@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2000
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.64
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trumpf.Coparoo.Desktop", "Trumpf.Coparoo.Desktop\Trumpf.Coparoo.Desktop.csproj", "{5C1B2F6C-88F1-431C-845E-9B6822687326}"
 EndProject
@@ -40,6 +40,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 		Resources\logo640.png = Resources\logo640.png
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trumpf.Coparoo.Desktop.Tests.LoadFrom", "Trumpf.Coparoo.Desktop.Tests.LoadFrom\Trumpf.Coparoo.Desktop.Tests.LoadFrom.csproj", "{C01E0131-5C05-4BA2-A75D-C4366A5B3D12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{C81E860D-EEF2-4382-B7D0-25589503C718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C81E860D-EEF2-4382-B7D0-25589503C718}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C81E860D-EEF2-4382-B7D0-25589503C718}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C01E0131-5C05-4BA2-A75D-C4366A5B3D12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C01E0131-5C05-4BA2-A75D-C4366A5B3D12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C01E0131-5C05-4BA2-A75D-C4366A5B3D12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C01E0131-5C05-4BA2-A75D-C4366A5B3D12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{053224A9-58CC-4AC7-89A4-1EE522FC06CC} = {8AC624AC-6151-49E5-8383-5EADE5350D51}
 		{C81E860D-EEF2-4382-B7D0-25589503C718} = {2F4141C8-B621-4EFA-840A-72CC3A58F098}
 		{44BB76B2-556D-4EF0-B4C3-7A30C62B0C81} = {5974447A-DF04-4122-AD33-1D472EEC09AC}
+		{C01E0131-5C05-4BA2-A75D-C4366A5B3D12} = {D0BB5B5B-C83E-4983-AC5E-D4298DFBC65C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1C63664-4483-48E9-A681-AEEAA251E211}
