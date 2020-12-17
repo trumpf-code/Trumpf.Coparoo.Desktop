@@ -4,6 +4,9 @@
     <TargetFramework>NET451</TargetFramework>
     <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
 
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
     <!-- nupkg information -->
     <PackageId>Trumpf.Coparoo.Desktop</PackageId>
     <Title>Trumpf.Coparoo.Desktop Library for .NET</Title>

@@ -15,19 +15,21 @@
 namespace Trumpf.Coparoo.Desktop.Exceptions
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Ambiguous control object match exception class.
+    /// Ambiguous parent object found exception class.
     /// </summary>
-    public class AmbiguousControlObjectMatchException : Exception
+    public class AmbiguousParentObjectFoundException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AmbiguousControlObjectMatchException"/> class.
+        /// Initializes a new instance of the <see cref="AmbiguousParentObjectFoundException"/> class.
         /// </summary>
-        public AmbiguousControlObjectMatchException(Type controlObjectType, Type[] candidateTypes, Type lowestCommonBaseClass)
-            : base($"Control object '{controlObjectType}' could not be resolved; the following types have no common assignable base class: {string.Join(", ", candidateTypes.Select(e => $"'{e.Name}'"))}. The lowest common base class is '{lowestCommonBaseClass}'.")
+        public AmbiguousParentObjectFoundException(IPageObject parentToFind, Type similarParent, Type childOfSimilarParent)
+            : base($"Error when searching for page object '{parentToFind.GetType().Name}' in location '{parentToFind.GetType().Assembly.Location}' in the page object tree: Found the same class in location {similarParent.Assembly.Location}' with child '{childOfSimilarParent}'. Ensure that page objects are only loaded once. Check https://stackoverflow.com/a/3624044 for ideas on how to solve this issue.")
         {
         }
     }
+
+
 }

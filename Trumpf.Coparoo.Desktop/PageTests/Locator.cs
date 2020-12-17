@@ -28,7 +28,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
     /// </summary>
     internal static class Locate
     {
-        private static Dictionary<Type, Type[]> parentToChildrenMap;
+        private static Dictionary<Type, Type[]> childToparentsMap;
         private static Type[] pageObjectTypes;
         private static Type[] controlObjectTypes;
         private static Type[] uiaObjectTypes;
@@ -75,46 +75,30 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// Gets the page object types in the current app domain.
         /// </summary>
         internal static Type[] PageObjectTypes
-        {
-            get { return pageObjectTypes ?? (pageObjectTypes = UIObjectTypes(pageObjectSelector)); }
-        }
+            => pageObjectTypes ?? (pageObjectTypes = UIObjectTypes(pageObjectSelector));
 
         /// <summary>
         /// Gets the control object types in the current app domain.
         /// </summary>
         internal static Type[] ControlObjectTypes
-        {
-            get { return controlObjectTypes ?? (controlObjectTypes = UIObjectTypes(controlObjectSelector)); }
-        }
+            => controlObjectTypes ?? (controlObjectTypes = UIObjectTypes(controlObjectSelector));
 
         /// <summary>
-        /// Gets the page object types.
+        /// Gets the cached child to parent page object type map.
         /// </summary>
-        private static Dictionary<Type, Type[]> ParentToChildMap
-        {
-            get
-            {
-                if (parentToChildrenMap == null)
-                {
-                    parentToChildrenMap = new Dictionary<Type, Type[]>();
-                    foreach (Type type in PageObjectTypes)
-                    {
-                        if (!type.IsAbstract)
-                        {
-                            var interfaces = type.GetInterfaces();
-                            var childOfInterfaces = interfaces.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IChildOf<>));
-                            if (childOfInterfaces.Any())
-                            {
-                                var parentTypes = childOfInterfaces.Select(i => i.GenericTypeArguments.First()).ToArray();
-                                parentToChildrenMap.Add(type, parentTypes.Select(e => Resolve(e)).ToArray());
-                            }
-                        }
-                    }
-                }
+        private static Dictionary<Type, Type[]> ChildToParent
+            => childToparentsMap ?? (childToparentsMap = ChildToParentUncached());
 
-                return parentToChildrenMap;
-            }
-        }
+        /// <summary>
+        /// Compute the child to parent page object type map.
+        /// </summary>
+        private static Dictionary<Type, Type[]> ChildToParentUncached()
+            => PageObjectTypes
+                .Select(pageObjectType => new { PageObjectType = pageObjectType, ChildOfInterfaces = pageObjectType.GetInterfaces().Where(f => f.IsGenericType && f.GetGenericTypeDefinition() == typeof(IChildOf<>)) })
+                .Where(e => !e.PageObjectType.IsAbstract && e.ChildOfInterfaces.Any())
+                .Select(e => new { e.PageObjectType, Parents = e.ChildOfInterfaces.Select(i => i.GenericTypeArguments.First()).ToArray() })
+                .Select(e => new { e.PageObjectType, ResolvedParent = e.Parents.Select(parent => Resolve(parent)) })
+                .ToDictionary(e => e.PageObjectType, e => e.ResolvedParent.ToArray());
 
         /// <summary>
         /// Gets the UI object types in the current app domain.
@@ -144,11 +128,21 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// <summary>
         /// Gets the page object types.
         /// </summary>
-        /// <param name="pageObject">The parent page object.</param>
+        /// <param name="parentToFind">The parent page object.</param>
         /// <returns>The child types.</returns>
-        internal static IEnumerable<Type> ChildTypes(IPageObject pageObject)
+        internal static IEnumerable<Type> ChildTypes(IPageObject parentToFind)
         {
-            return ParentToChildMap.Where(e => e.Value.Contains(pageObject.GetType())).Select(e => e.Key);
+            var notMatchingTypeYetMatchingQualifiedName = ChildToParent.Where(childAndParents => !childAndParents.Value.Contains(parentToFind.GetType()) && childAndParents.Value.Select(parent => parent.AssemblyQualifiedName).Contains(parentToFind.GetType().AssemblyQualifiedName));
+            if (notMatchingTypeYetMatchingQualifiedName.Any())
+            {
+                var similarParents = notMatchingTypeYetMatchingQualifiedName.First().Value;
+                var similarParent = similarParents.First(parent => parent.AssemblyQualifiedName == parentToFind.GetType().AssemblyQualifiedName);
+                var childOfSimilarParent = notMatchingTypeYetMatchingQualifiedName.First().Key;
+                throw new AmbiguousParentObjectFoundException(parentToFind, similarParent, childOfSimilarParent);
+            }
+
+            var resultByEquality = ChildToParent.Where(e => e.Value.Contains(parentToFind.GetType())).Select(e => e.Key);
+            return resultByEquality;
         }
 
         /// <summary>
@@ -156,7 +150,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// </summary>
         internal static void ClearCaches()
         {
-            parentToChildrenMap = null;
+            childToparentsMap = null;
             pageObjectTypes = null;
             controlObjectTypes = null;
             uiaObjectTypes = null;
