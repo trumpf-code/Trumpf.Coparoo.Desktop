@@ -36,10 +36,18 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
         [Test]
         public void WhenTheSamePageObjectIsLoadedTwiceFromDifferentLocations_ThenAccessingThatTypeViaOnThrowsAnException()
         {
+            // Prepare
             var currentAssemblyLocation = GetType().Assembly.Location;
+
+            // delte copy if it exists
+            if (File.Exists(OTHER_DLL_FILENAME))
+                File.Delete(OTHER_DLL_FILENAME);
             File.Copy(currentAssemblyLocation, OTHER_DLL_FILENAME);
+
+            // load the currently running assembly again
             Assembly.LoadFrom(OTHER_DLL_FILENAME);
 
+            // Act & Check
             Assert.Throws<AmbiguousParentObjectFoundException>(() => new A().On<B>());
         }
     }
