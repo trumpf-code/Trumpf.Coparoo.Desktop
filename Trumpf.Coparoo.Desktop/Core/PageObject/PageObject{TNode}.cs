@@ -21,6 +21,7 @@ namespace Trumpf.Coparoo.Desktop.Core
 
     using Logging.DotTree;
     using PageTests;
+    using Trumpf.Coparoo.Desktop.Extensions;
 
     /// <summary>
     /// Base class of all page objects.
@@ -52,7 +53,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// </summary>
         Image IPageObjectInternal.Picture
         {
-            get { return RootInternal.NodeLocator.Picture(GetHashCode()); }
+            get { return this.RootInternal().NodeLocator.Picture(GetHashCode()); }
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         public IEnumerable<IPageObject> Children<TPageObjectChildHint>()
         {
             List<IPageObject> result = new List<IPageObject>();
-            foreach (var childPageObject in Locate.ChildTypes(this).Union(RootInternal.DynamicChildren(GetType())))
+            foreach (var childPageObject in Locate.ChildTypes(this).Union(this.RootInternal().DynamicChildren(GetType())))
             {
                 Type toAdd;
                 Type hintType = typeof(TPageObjectChildHint);
@@ -161,7 +162,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// </summary>
         public virtual void Goto()
         {
-            if (RootInternal.Configuration.AutoGoto && !VisibleOnScreen)
+            if (this.RootInternal().Configuration.AutoGoto && !VisibleOnScreen)
             {
                 AutoGoto();
                 VisibleOnScreen.WaitFor();
