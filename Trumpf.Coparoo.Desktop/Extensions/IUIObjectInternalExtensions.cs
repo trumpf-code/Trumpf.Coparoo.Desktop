@@ -1,5 +1,4 @@
-﻿
-// Copyright 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Trumpf.Coparoo.Desktop.Core;
-
 namespace Trumpf.Coparoo.Desktop.Extensions
 {
+    using Trumpf.Coparoo.Desktop.Core;
+
     internal static class IUIObjectInternalExtensions
     {
         public static IRootObjectInternal RootInternal(this IUIObjectInternal source)
