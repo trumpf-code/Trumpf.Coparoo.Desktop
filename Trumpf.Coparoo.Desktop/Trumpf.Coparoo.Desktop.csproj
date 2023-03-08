@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- project information -->
-    <TargetFramework>NET451</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
 
     <IncludeSymbols>true</IncludeSymbols>
@@ -31,7 +31,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <DefineConstants>TRACE;DEBUG;NET451</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;net472</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

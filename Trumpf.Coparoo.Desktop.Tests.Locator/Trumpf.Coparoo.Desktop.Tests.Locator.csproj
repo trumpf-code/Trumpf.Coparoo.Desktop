@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net451</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trumpf.Coparoo.Desktop.DemoApp.Interf\Trumpf.Coparoo.Desktop.DemoApp.Interf.csproj" />
