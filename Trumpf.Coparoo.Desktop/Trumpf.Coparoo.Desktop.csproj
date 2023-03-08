@@ -41,10 +41,10 @@
 
   <!-- reference information -->
   <ItemGroup>
-    <None Include="$(SolutionDir)Resources\logo.png" Pack="true" PackagePath=""/>
-    <None Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath=""/>
+    <None Include="$(SolutionDir)Resources\logo.png" Pack="true" PackagePath="" />
+    <None Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath="" />
     <PackageReference Include="SmartBear.TestLeft" Version="4.10.999.11" />
-    <PackageReference Include="Stashbox" Version="5.7.1" />
+    <PackageReference Include="Stashbox" Version="5.8.0" />
     <Reference Include="mscorlib" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
