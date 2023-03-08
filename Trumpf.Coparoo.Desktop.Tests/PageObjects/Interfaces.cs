@@ -70,7 +70,8 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
         {
             // Act
             var rootObject = ProcessObject.Resolve<IA>();
-            var type = rootObject.Resolve<IG<IF>>();
+            var page = rootObject.On<IB>();
+            var type = page.Resolve<IG<IF>>();
 
             // Check
             Assert.AreEqual(typeof(G<IF>), type);
