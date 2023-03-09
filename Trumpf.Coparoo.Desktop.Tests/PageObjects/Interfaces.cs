@@ -17,6 +17,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
     using System;
 
     using NUnit.Framework;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
     using Trumpf.Coparoo.Desktop.WinForms;
 
     [TestFixture]
@@ -62,6 +63,18 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
             where I : IControlObject
             where I2 : IControlObject
         {
+        }
+
+        [Test]
+        public void WheAInterfaceTypeIsResolve_ThenTheReturnedTypeIsCorrect()
+        {
+            // Act
+            var rootObject = ProcessObject.Resolve<IA>();
+            var page = rootObject.On<IB>();
+            var type = page.Resolve<IG<IF>>();
+
+            // Check
+            Assert.AreEqual(typeof(G<IF>), type);
         }
 
         [Test]
