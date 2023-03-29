@@ -25,7 +25,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
-		<Version>1.2.3-beta</Version>
+		<Version>1.2.4</Version>
 		<RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
@@ -42,7 +42,7 @@
 
 	<!-- reference information -->
 	<ItemGroup>
-		<None Include="..\README.md" Pack="true" PackagePath="\"/>
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
 		<None Include="$(SolutionDir)Resources\logo.png" Pack="true" PackagePath="" />
 		<None Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath="" />
 		<PackageReference Include="SmartBear.TestLeft" Version="4.10.999.11" />

@@ -32,7 +32,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <summary>
         /// Gets the control pattern.
         /// </summary>
-        protected TControlPattern Pattern
+        public TControlPattern Pattern
         {
             get { return pattern; }
         }

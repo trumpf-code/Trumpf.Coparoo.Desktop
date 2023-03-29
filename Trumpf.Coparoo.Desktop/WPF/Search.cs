@@ -188,6 +188,17 @@ namespace Trumpf.Coparoo.Desktop.WPF
         }
 
         /// <summary>
+        /// Adds to a search pattern an additional search by control type.
+        /// </summary>
+        /// <param name="clrFullClassName">The full class name.</param>
+        /// <returns>The search pattern.</returns>
+        public Search AndByClrFullClassName(string clrFullClassName)
+        {
+            Pattern.ClrFullClassName = clrFullClassName;
+            return this;
+        }
+
+        /// <summary>
         /// Adds to a search pattern an additional search by control name.
         /// </summary>
         /// <param name="cntrolName">The WPF control name to search for.</param>
