@@ -115,6 +115,14 @@ namespace Trumpf.Coparoo.Desktop.WPF
         }
 
         /// <summary>
+        /// Create a search pattern for the given constraint by the fully class name.
+        /// </summary>
+        /// <param name="clrFullClassName">The full class name.</param>
+        /// <returns>The search pattern.</returns>
+        public Search ByClrFullClassName(string clrFullClassName)
+            => Any.ByClrFullClassName(clrFullClassName);
+
+        /// <summary>
         /// Create a search pattern for the given constraint by control name.
         /// </summary>
         /// <param name="controlName">The WPF control name to search for.</param>
