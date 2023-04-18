@@ -21,7 +21,7 @@ namespace Trumpf.Coparoo.Desktop.Core
     /// <summary>
     /// The node object locator interface.
     /// </summary>
-    internal interface INodeLocator
+    public interface INodeLocator
     {
         /// <summary>
         /// Clear the register.

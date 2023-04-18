@@ -191,7 +191,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
 
         private static IRootObject GetRoot(IPageObject source)
         {
-            return ((IUIObjectInternal)source).Root();
+            return source.Root();
         }
 
         /// <summary>

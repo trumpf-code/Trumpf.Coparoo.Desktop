@@ -25,6 +25,6 @@ namespace Trumpf.Coparoo.Desktop.Web
         /// <summary>
         /// Gets the current URL.
         /// </summary>
-        public string TabUrl => (((IUIObjectInternal)this).Root() as WebPageObject).Url;
+        public string TabUrl => (this.Root() as WebPageObject).Url;
     }
 }

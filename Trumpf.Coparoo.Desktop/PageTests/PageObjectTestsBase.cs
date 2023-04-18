@@ -82,7 +82,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// <param name="pageUnderTest">The page object to drive the test.</param>
         void IPageObjectTestsInternal.Init(IPageObject pageUnderTest)
         {
-            Configuration = new Lazy<Configuration>(() => (Page as IUIObjectInternal).Root().Configuration);
+            Configuration = new Lazy<Configuration>(() => Page.Root().Configuration);
             Page = (TPageUnderTest)pageUnderTest;
         }
 

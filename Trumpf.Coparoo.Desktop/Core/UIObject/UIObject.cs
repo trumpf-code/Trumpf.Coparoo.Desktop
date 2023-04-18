@@ -272,7 +272,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The initialized page object.</returns>
         internal virtual IUIObject Init(IUIObject parent)
         {
-            bool enable = ((IRootObjectInternal)(parent as IUIObjectInternal).Root()).Configuration.EnableImages;
+            bool enable = parent.Root().Configuration.EnableImages;
             TNode node = new TNode();
             ((IUIObjectNodeInternal)node).Init(parent.Node, GetHashCode(), enable, () => PageObjectSearchDepth, () => ControlSearchDepth);
             Init(parent, node);
