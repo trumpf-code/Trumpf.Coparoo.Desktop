@@ -32,11 +32,6 @@ namespace Trumpf.Coparoo.Desktop.Core
         int PageObjectSearchDepth { get; }
 
         /// <summary>
-        /// Gets the root page object.
-        /// </summary>
-        IRootObject Root { get; }
-
-        /// <summary>
         /// Sets the 0-based control index.
         /// </summary>
         int Index { set; }

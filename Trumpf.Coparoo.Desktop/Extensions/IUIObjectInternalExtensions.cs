@@ -15,12 +15,13 @@
 namespace Trumpf.Coparoo.Desktop.Extensions
 {
     using Trumpf.Coparoo.Desktop.Core;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     internal static class IUIObjectInternalExtensions
     {
         public static IRootObjectInternal RootInternal(this IUIObjectInternal source)
         {
-            return source.Root as IRootObjectInternal;
+            return source.Root() as IRootObjectInternal;
         }
     }
 }

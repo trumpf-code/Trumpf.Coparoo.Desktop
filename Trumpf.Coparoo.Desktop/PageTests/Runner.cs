@@ -23,6 +23,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
     using Coparoo.Desktop;
     using Statistics;
     using Trumpf.Coparoo.Desktop.Core;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     /// <summary>
     /// Page object test class runner.
@@ -190,7 +191,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
 
         private static IRootObject GetRoot(IPageObject source)
         {
-            return ((IUIObjectInternal)source).Root;
+            return ((IUIObjectInternal)source).Root();
         }
 
         /// <summary>

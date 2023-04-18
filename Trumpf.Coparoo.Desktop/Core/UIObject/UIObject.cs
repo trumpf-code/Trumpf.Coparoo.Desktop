@@ -26,6 +26,7 @@ namespace Trumpf.Coparoo.Desktop.Core
     using SmartBear.TestLeft.TestObjects;
     using Trumpf.Coparoo.Desktop.Waiting;
     using Trumpf.Coparoo.Desktop.Core.Waiting;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     /// <summary>
     /// Base class of all page objects.
@@ -58,15 +59,6 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// Gets the root to control search depth.
         /// </summary>
         protected virtual int ControlSearchDepth => mControlObjectSearchDepth ?? this.RootInternal().Configuration.ControlSearchDepth;
-
-        /// <summary>
-        /// Gets the root page object.
-        /// </summary>
-        /// <returns>The root page object.</returns>
-        IRootObject IUIObjectInternal.Root
-        {
-            get { return this is IRootObject ? this as IRootObject : (Parent as IUIObjectInternal).Root; }
-        }
 
         /// <summary>
         /// Sets the 0-based control index.
@@ -280,7 +272,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The initialized page object.</returns>
         internal virtual IUIObject Init(IUIObject parent)
         {
-            bool enable = ((IRootObjectInternal)(parent as IUIObjectInternal).Root).Configuration.EnableImages;
+            bool enable = ((IRootObjectInternal)(parent as IUIObjectInternal).Root()).Configuration.EnableImages;
             TNode node = new TNode();
             ((IUIObjectNodeInternal)node).Init(parent.Node, GetHashCode(), enable, () => PageObjectSearchDepth, () => ControlSearchDepth);
             Init(parent, node);

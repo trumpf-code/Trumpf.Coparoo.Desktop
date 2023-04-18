@@ -17,12 +17,20 @@ namespace Trumpf.Coparoo.Desktop.Diagnostics
     using System;
     using Trumpf.Coparoo.Desktop.Core;
     using Trumpf.Coparoo.Desktop.Extensions;
+    using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
     /// <summary>
     /// IUIObject extensions
     /// </summary>
     public static class IUIObjectExtenstions
     {
+        /// <summary>
+        /// Gets the root page object.
+        /// </summary>
+        /// <returns>The root page object.</returns>
+        public static IRootObject Root(this IUIObject source)
+            => source is IRootObject ? source as IRootObject : (source.Parent as IUIObjectInternal).Root();
+
         /// <summary>
         /// Gets the type a type is resolved to.
         /// </summary>

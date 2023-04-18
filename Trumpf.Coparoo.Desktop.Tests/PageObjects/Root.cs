@@ -18,6 +18,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
     using NUnit.Framework;
     using Coparoo.Desktop;
     using Trumpf.Coparoo.Desktop.WinForms;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     [TestFixture]
     public class Root
@@ -26,7 +27,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
         public void TheRootsRootIsTheRoot()
         {
             var a = new A();
-            var r = (a as IUIObjectInternal).Root;
+            var r = (a as IUIObjectInternal).Root();
             Assert.AreEqual(a, r);
         }
 
@@ -35,7 +36,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
         {
             var a = new A();
             var b = a.On<B>();
-            Assert.AreEqual((a as IUIObjectInternal).Root, (b as IUIObjectInternal).Root);
+            Assert.AreEqual((a as IUIObjectInternal).Root(), (b as IUIObjectInternal).Root());
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
         {
             var a = new A();
             var c = a.On<C>();
-            Assert.AreEqual((a as IUIObjectInternal).Root, (c as IUIObjectInternal).Root);
+            Assert.AreEqual((a as IUIObjectInternal).Root(), (c as IUIObjectInternal).Root());
         }
 
         private class A : ProcessObject
