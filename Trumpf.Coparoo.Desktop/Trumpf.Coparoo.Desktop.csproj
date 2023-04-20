@@ -6,6 +6,8 @@
 
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<DebugType>embedded</DebugType>
+		<Optimize>false</Optimize>
 
 		<!-- nupkg information -->
 		<PackageId>Trumpf.Coparoo.Desktop</PackageId>
@@ -25,7 +27,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
-		<Version>1.2.8</Version>
+		<Version>1.2.7</Version>
 		<RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
