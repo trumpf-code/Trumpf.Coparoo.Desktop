@@ -14,12 +14,16 @@
 
 namespace Trumpf.Coparoo.Desktop
 {
-    using Core;
+    using SmartBear.TestLeft.TestObjects;
 
     /// <summary>
     /// Interface for the process object base class.
     /// </summary>
     public interface IProcessObject : IRootObject
     {
+        /// <summary>
+        /// Gets the top level windows.
+        /// </summary>
+        IWindow MainWindow { get; }
     }
 }

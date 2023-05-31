@@ -51,6 +51,10 @@ namespace Trumpf.Coparoo.Desktop
         public new IProcessObjectNode Node => base.Node;
 
         /// <inheritdoc/>
+        public IWindow MainWindow
+            => Node.Process.Find<ITopLevelWindow>(new WindowPattern { WndCaption = System.Diagnostics.Process.GetProcessById(Process.ProcessId).MainWindowTitle });
+
+        /// <inheritdoc/>
         protected override bool IsVisibleOnScreen
         {
             get { return false; }
