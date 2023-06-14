@@ -163,7 +163,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
             where I : IControlObject
         {
             public I Item
-                => Find<I>();
+                => this.Find<I>();
 
             internal void Init(F f)
                 => throw new NotImplementedException();
@@ -173,7 +173,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
             where I : IControlObject
         {
             public I Item
-                => Find<I>();
+                => this.Find<I>();
 
             internal void Init(F f)
                 => throw new NotImplementedException();

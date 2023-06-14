@@ -19,9 +19,23 @@ namespace Trumpf.Coparoo.Desktop
     using System.Drawing;
 
     using Core;
+    using Waiting;
+
+    // müssten raus
     using SmartBear.TestLeft;
     using SmartBear.TestLeft.TestObjects;
-    using Waiting;
+
+
+    public class Spezifisch : Attribute {
+        public Spezifisch(string msg)
+        {
+            
+        }
+    }
+    public class ExtensionKandidate : Attribute { }
+    public class Extension : Attribute { }
+    public class EigentlichUnnötigFürCotrolObjectsAberDrinLassen : Attribute { }
+    public class Lassen : Attribute { }
 
     /// <summary>
     /// Interface for the UI object base class.
@@ -31,71 +45,71 @@ namespace Trumpf.Coparoo.Desktop
         /// <summary>
         /// Gets the parent of this UI object.
         /// </summary>
-        IUIObject Parent { get; }
+        [Spezifisch("ginge als object")]IUIObject Parent { get; }
 
         /// <summary>
         /// Gets the root node.
         /// </summary>
-        IUIObjectNode Node { get; }
+        [Spezifisch("ginge als object")] IUIObjectNode Node { get; }
 
         /// <summary>
         /// Gets a value indicating whether the UI object's node is visible on the screen.
         /// </summary>
-        Wool VisibleOnScreen { get; }
+        [ExtensionKandidate]Wool VisibleOnScreen { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the UI object can respond to user interaction.
         /// </summary>
-        Wool Enabled { get; }
+        [ExtensionKandidate] Wool Enabled { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the control and all its child controls are displayed.
         /// </summary>
-        Wool Visible { get; }
+        [ExtensionKandidate] Wool Visible { get; }
 
         /// <summary>
         /// Gets a value indicating whether the UI object's node exists in the UI tree.
         /// </summary>
-        Wool Exists { get; }
+        [ExtensionKandidate] Wool Exists { get; }
 
         /// <summary>
         /// Gets the horizontal position of the UI object's left edge in screen coordinates.
         /// </summary>
-        int ScreenLeft { get; }
+        [ExtensionKandidate] int ScreenLeft { get; }
 
         /// <summary>
         /// Gets the vertical position of the UI object's top edge in screen coordinates.
         /// </summary>
-        int ScreenTop { get; }
+        [ExtensionKandidate] int ScreenTop { get; }
 
         /// <summary>
         /// Gets the width of the UI object.
         /// </summary>
-        int Width { get; }
+        [ExtensionKandidate] int Width { get; }
 
         /// <summary>
         /// Gets the height of the UI object.
         /// </summary>
-        int Height { get; }
+        [ExtensionKandidate] int Height { get; }
 
         /// <summary>
         /// Gets a picture of the UI object.
         /// </summary>
-        Image Picture { get; }
+        [ExtensionKandidate] Image Picture { get; }
 
         /// <summary>
         /// Get the specific page object.
         /// </summary>
         /// <param name="pageType">Type of the page object.</param>
         /// <returns>Type of page object.</returns>
-        IPageObject On(Type pageType);
+        [EigentlichUnnötigFürCotrolObjectsAberDrinLassen]IPageObject On(Type pageType);
 
         /// <summary>
         /// Get the specific page object.
         /// </summary>
         /// <typeparam name="TPageObject">Type of the page object.</typeparam>
         /// <returns>Type of page object.</returns>
-        TPageObject On<TPageObject>() where TPageObject : IPageObject;
+        [EigentlichUnnötigFürCotrolObjectsAberDrinLassen] TPageObject On<TPageObject>() where TPageObject : IPageObject;
 
         /// <summary>
         /// Get the specific page object.
@@ -103,13 +117,13 @@ namespace Trumpf.Coparoo.Desktop
         /// <param name="condition">The condition that must evaluate true for the resulting page object.</param>
         /// <typeparam name="TPageObject">Type of the page object.</typeparam>
         /// <returns>Type of page object.</returns>
-        TPageObject On<TPageObject>(Predicate<TPageObject> condition) where TPageObject : IPageObject;
+        [EigentlichUnnötigFürCotrolObjectsAberDrinLassen] TPageObject On<TPageObject>(Predicate<TPageObject> condition) where TPageObject : IPageObject;
 
         /// <summary>
         /// Snap the page object, i.e. associate it with a specific node in the UI tree. This disables lazy node evaluation.
         /// </summary>
         /// <returns>Whether the snap succeeded.</returns>
-        bool TrySnap();
+        [Lassen] bool TrySnap();
 
         /// <summary>
         /// Goto the page object.
@@ -117,7 +131,7 @@ namespace Trumpf.Coparoo.Desktop
         /// </summary>
         /// <typeparam name="TPageObject">The target page object type.</typeparam>
         /// <returns>The target page object.</returns>
-        TPageObject Goto<TPageObject>() where TPageObject : IPageObject;
+        [EigentlichUnnötigFürCotrolObjectsAberDrinLassen] TPageObject Goto<TPageObject>() where TPageObject : IPageObject;
 
         /// <summary>
         /// Goto the page object.
@@ -126,17 +140,17 @@ namespace Trumpf.Coparoo.Desktop
         /// <param name="condition">The condition that must evaluate true for target page object.</param>
         /// <typeparam name="TPageObject">The target page object type.</typeparam>
         /// <returns>The target page object.</returns>
-        TPageObject Goto<TPageObject>(Predicate<TPageObject> condition) where TPageObject : IPageObject;
+        [EigentlichUnnötigFürCotrolObjectsAberDrinLassen] TPageObject Goto<TPageObject>(Predicate<TPageObject> condition) where TPageObject : IPageObject;
 
-        /// <summary>
-        /// Gets the control.
-        /// </summary>
-        /// <typeparam name="TControl">The control type.</typeparam>
-        /// <param name="pattern">The search pattern to locate the control.</param>
-        /// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
-        /// <param name="depth">The maximum search depth.</param>
-        /// <returns>The control object.</returns>
-        TControl Find<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject;
+        ///// <summary>
+        ///// Gets the control.
+        ///// </summary>
+        ///// <typeparam name="TControl">The control type.</typeparam>
+        ///// <param name="pattern">The search pattern to locate the control.</param>
+        ///// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
+        ///// <param name="depth">The maximum search depth.</param>
+        ///// <returns>The control object.</returns>
+        //[Extension] TControl Find<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject;
 
         /// <summary>
         /// Gets all matching controls.
@@ -146,17 +160,17 @@ namespace Trumpf.Coparoo.Desktop
         /// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
         /// <param name="depth">The maximum search depth.</param>
         /// <returns>The control enumeration.</returns>
-        IEnumerable<TControl> FindAll<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject;
+        [Extension] IEnumerable<TControl> FindAll<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject;
 
         /// <summary>
         /// Scroll to the UI object.
         /// </summary>
-        void ScrollTo();
+        [ExtensionKandidate] void ScrollTo();
 
         /// <summary>
         /// Scroll to the UI object.
         /// </summary>
         /// <param name="timeout">The timeout to wait for the object to become visible between page downs.</param>
-        void ScrollTo(TimeSpan timeout);
+        [ExtensionKandidate] void ScrollTo(TimeSpan timeout);
     }
 }

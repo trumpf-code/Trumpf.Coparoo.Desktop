@@ -32,13 +32,13 @@ namespace VDI.Coparoo.Desktop
         }
 
         public IButton SucheAnzeigen
-            => Find<Button>(Search.ByContentText("Suche anzeigen"));
+            => this.Find<Button>(Search.ByContentText("Suche anzeigen"));
 
         public IInputBox Volltextsuche
-            => Find<InputBox>();
+            => this.Find<InputBox>();
 
         public IEnumerable<ISeminarZeile> SeminarZeilen
-            => FindAll<SeminarZeile>();
+            => this.FindAll<SeminarZeile>();
 
         public void SearchFor(string searchText)
         {

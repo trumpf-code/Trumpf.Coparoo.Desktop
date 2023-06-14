@@ -30,6 +30,6 @@ namespace VDI.Coparoo.Desktop
             => base.IsVisibleOnScreen && TabUrl.Contains("fortbildungszentrum-stuttgart");
 
         public IButton WeitereSeminare
-            => Find<Button>(Search.ByContentText("weitere Seminare"));
+            => this.Find<Button>(Search.ByContentText("weitere Seminare"));
     }
 }

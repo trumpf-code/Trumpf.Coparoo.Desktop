@@ -23,7 +23,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
     /// Test class.
     /// </summary>
     [TestFixture]
-    public class Find
+    public class FindTests
     {
         private const int DEFAULTCONTROLSEARCHDEPTH = 99;
         private const int DEFAULTPAGEOBJECTSEARCHDEPTH = 98;

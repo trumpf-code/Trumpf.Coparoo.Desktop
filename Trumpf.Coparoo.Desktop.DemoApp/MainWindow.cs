@@ -22,15 +22,15 @@ namespace Trumpf.Coparoo.Desktop.DemoApp
     public class MainWindow : ViewPageObject<WpfApp1.MainWindow>, IChildOf<DemoApp>, IMainWindow
     {
         public IButton IncrementButton
-            => Find<IButton>(Search.ByControlName("HelloButton"));
+            => this.Find<IButton>(Search.ByControlName("HelloButton"));
 
         public IButton ResetButton
-            => Find<IButton>(Search.ByControlName("ResetButton"));
+            => this.Find<IButton>(Search.ByControlName("ResetButton"));
 
         public IButton[] Buttons
             => FindAll<IButton>().ToArray();
 
         public IButton<IButton> TypedButton
-            => Find<IButton<IButton>>();
+            => this.Find<IButton<IButton>>();
     }
 }

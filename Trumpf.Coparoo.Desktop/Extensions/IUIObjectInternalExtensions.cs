@@ -19,7 +19,7 @@ namespace Trumpf.Coparoo.Desktop.Extensions
 
     internal static class IUIObjectInternalExtensions
     {
-        public static IRootObjectInternal RootInternal(this IUIObjectInternal source)
+        public static IRootObjectInternal RootInternal(this IUIObject source)
         {
             return source.Root() as IRootObjectInternal;
         }
