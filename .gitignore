@@ -296,3 +296,5 @@ __pycache__/
 
 # User added stuff
 /NuGet.Config
+*.dot
+*.pdf
