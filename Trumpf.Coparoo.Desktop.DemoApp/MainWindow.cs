@@ -28,7 +28,7 @@ namespace Trumpf.Coparoo.Desktop.DemoApp
             => this.Find<IButton>(Search.ByControlName("ResetButton"));
 
         public IButton[] Buttons
-            => FindAll<IButton>().ToArray();
+            => this.FindAll<IButton>().ToArray();
 
         public IButton<IButton> TypedButton
             => this.Find<IButton<IButton>>();

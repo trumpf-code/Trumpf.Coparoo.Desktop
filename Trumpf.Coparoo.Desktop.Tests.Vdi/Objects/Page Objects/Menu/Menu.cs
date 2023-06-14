@@ -36,7 +36,7 @@ namespace VDI.Coparoo.Desktop
         }
 
         public IButton[] Buttons
-            => FindAll<Button>().OrderPagesFromLeftToRight().ToArray();
+            => this.FindAll<Button>().OrderPagesFromLeftToRight().ToArray();
 
         public IButton Logo
             => Buttons.ElementAt(0);

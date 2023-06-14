@@ -152,15 +152,15 @@ namespace Trumpf.Coparoo.Desktop
         ///// <returns>The control object.</returns>
         //[Extension] TControl Find<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject;
 
-        /// <summary>
-        /// Gets all matching controls.
-        /// </summary>
-        /// <typeparam name="TControl">The control type.</typeparam>
-        /// <param name="pattern">The search pattern to locate the control.</param>
-        /// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
-        /// <param name="depth">The maximum search depth.</param>
-        /// <returns>The control enumeration.</returns>
-        [Extension] IEnumerable<TControl> FindAll<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject;
+        ///// <summary>
+        ///// Gets all matching controls.
+        ///// </summary>
+        ///// <typeparam name="TControl">The control type.</typeparam>
+        ///// <param name="pattern">The search pattern to locate the control.</param>
+        ///// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
+        ///// <param name="depth">The maximum search depth.</param>
+        ///// <returns>The control enumeration.</returns>
+        //[Extension] IEnumerable<TControl> FindAll<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject;
 
         /// <summary>
         /// Scroll to the UI object.

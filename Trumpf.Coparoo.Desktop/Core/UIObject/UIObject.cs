@@ -17,6 +17,7 @@ using SmartBear.TestLeft;
 using System;
 using Trumpf.Coparoo.Desktop.Core;
 using Trumpf.Coparoo.Desktop.Extensions;
+using System.Collections.Generic;
 
 namespace Trumpf.Coparoo.Desktop
 {
@@ -38,19 +39,42 @@ namespace Trumpf.Coparoo.Desktop
             (result as IUIObjectInternal).Init(depth ?? ((IUIObjectInternal)source).ControlSearchDepth, null);
             return result;
         }
+
+        /// <summary>
+        /// Gets all matching controls.
+        /// </summary>
+        /// <typeparam name="TControl">The control type.</typeparam>
+        /// <param name="pattern">The search pattern to locate the control.</param>
+        /// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
+        /// <param name="depth">The maximum search depth.</param>
+        /// <returns>The control enumeration.</returns>
+        public static IEnumerable<TControl> FindAll<TControl>(this IUIObject source, ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject
+        {
+            int next = 0;
+            while (true)
+            {
+                TControl result = source.Find<TControl>(pattern, predicate);
+                (result as IUIObjectInternal).Init(depth, null);
+                (result as IUIObjectInternal).Index = next++;
+                if (!result.Exists)
+                {
+                    break;
+                }
+
+                yield return result;
+            }
+        }
     }
 }
 namespace Trumpf.Coparoo.Desktop.Core
 {
     using System;
-    using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
 
     using Extensions;
-    using SmartBear.TestLeft;
     using SmartBear.TestLeft.TestObjects;
     using Trumpf.Coparoo.Desktop.Waiting;
     using Trumpf.Coparoo.Desktop.Core.Waiting;
@@ -327,31 +351,6 @@ namespace Trumpf.Coparoo.Desktop.Core
         public override int GetHashCode()
         {
             return GetType().FullName.GetHashCode();
-        }
-
-        /// <summary>
-        /// Gets all matching controls.
-        /// </summary>
-        /// <typeparam name="TControl">The control type.</typeparam>
-        /// <param name="pattern">The search pattern to locate the control.</param>
-        /// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
-        /// <param name="depth">The maximum search depth.</param>
-        /// <returns>The control enumeration.</returns>
-        public virtual IEnumerable<TControl> FindAll<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject
-        {
-            int next = 0;
-            while (true)
-            {
-                TControl result = this.Find<TControl>(pattern, predicate);
-                (result as IUIObjectInternal).Init(depth, null);
-                (result as IUIObjectInternal).Index = next++;
-                if (!result.Exists)
-                {
-                    break;
-                }
-
-                yield return result;
-            }
         }
 
         /// <inheritdoc/>
