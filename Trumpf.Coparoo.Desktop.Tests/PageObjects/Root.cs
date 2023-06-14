@@ -14,11 +14,10 @@
 
 namespace Trumpf.Coparoo.Desktop.Tests.Framework
 {
-    using Core;
     using NUnit.Framework;
     using Coparoo.Desktop;
     using Trumpf.Coparoo.Desktop.WinForms;
-    using Trumpf.Coparoo.Desktop.Diagnostics;
+    using Trumpf.Coparoo.Desktop.Extensions;
 
     [TestFixture]
     public class Root

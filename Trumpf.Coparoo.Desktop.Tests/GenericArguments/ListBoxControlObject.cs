@@ -1,6 +1,6 @@
 ﻿namespace CoparooInterfaceTest
 {
-    using Trumpf.Coparoo.Desktop;
+    using Trumpf.Coparoo.Desktop.Extensions;
     using Trumpf.Coparoo.Desktop.WPF;
 
     public interface IListBoxControlObject<T> : IControlObject where T : IControlObject

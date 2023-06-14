@@ -15,7 +15,6 @@
 namespace Trumpf.Coparoo.Desktop.Extensions
 {
     using Trumpf.Coparoo.Desktop.Core;
-    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     internal static class IUIObjectInternalExtensions
     {

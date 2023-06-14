@@ -17,6 +17,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
     using NUnit.Framework;
     using Trumpf.Coparoo.Desktop;
     using Trumpf.Coparoo.Desktop.Exceptions;
+    using Trumpf.Coparoo.Desktop.Extensions;
     using Trumpf.Coparoo.Desktop.WPF;
 
     [TestFixture]

@@ -18,6 +18,7 @@ namespace Trumpf.Coparoo.Desktop.DemoApp
 
     using Coparoo.Desktop;
     using Coparoo.Desktop.WPF;
+    using Trumpf.Coparoo.Desktop.Extensions;
 
     public class MainWindow : ViewPageObject<WpfApp1.MainWindow>, IChildOf<DemoApp>, IMainWindow
     {

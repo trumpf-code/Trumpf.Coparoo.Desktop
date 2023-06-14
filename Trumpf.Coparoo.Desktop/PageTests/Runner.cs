@@ -23,7 +23,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
     using Coparoo.Desktop;
     using Statistics;
     using Trumpf.Coparoo.Desktop.Core;
-    using Trumpf.Coparoo.Desktop.Diagnostics;
+    using Trumpf.Coparoo.Desktop.Extensions;
 
     /// <summary>
     /// Page object test class runner.

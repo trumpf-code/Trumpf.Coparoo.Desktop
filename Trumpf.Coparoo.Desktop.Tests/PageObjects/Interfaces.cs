@@ -17,7 +17,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
     using System;
 
     using NUnit.Framework;
-    using Trumpf.Coparoo.Desktop.Diagnostics;
+    using Trumpf.Coparoo.Desktop.Extensions;
     using Trumpf.Coparoo.Desktop.WinForms;
 
     [TestFixture]

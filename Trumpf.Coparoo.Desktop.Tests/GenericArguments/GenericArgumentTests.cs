@@ -2,6 +2,7 @@
 {
     using NUnit.Framework;
     using Trumpf.Coparoo.Desktop;
+    using Trumpf.Coparoo.Desktop.Extensions;
 
     [TestFixture]
     public class GenericArgumentTests

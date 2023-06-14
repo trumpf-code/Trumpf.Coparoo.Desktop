@@ -15,7 +15,7 @@
 namespace Trumpf.Coparoo.Desktop.Web
 {
     using Core;
-    using Trumpf.Coparoo.Desktop.Diagnostics;
+    using Trumpf.Coparoo.Desktop.Extensions;
 
     /// <summary>
     /// Base class of (node-less) page objects.

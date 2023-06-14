@@ -12,68 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using SmartBear.TestLeft.TestObjects;
-using SmartBear.TestLeft;
-using System;
-using Trumpf.Coparoo.Desktop.Core;
-using Trumpf.Coparoo.Desktop.Extensions;
-using System.Collections.Generic;
-
-namespace Trumpf.Coparoo.Desktop
-{
-    public static class IUIObjectExtensions
-    {
-        /// <summary>
-        /// Gets the parent of this UI object.
-        /// </summary>
-        public static IUIObject Parent(this IUIObject source)
-        {
-            return (source as IUIObjectInternal).Parent;
-        }
-
-        /// <summary>
-        /// Gets the control.
-        /// </summary>
-        /// <typeparam name="TControl">The control type.</typeparam>
-        /// <param name="pattern">The search pattern to locate the control.</param>
-        /// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
-        /// <param name="depth">The maximum search depth.</param>
-        /// <returns>The control object.</returns>
-        public static TControl Find<TControl>(this IUIObject source, ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject
-        {
-            var result = (TControl)Activator.CreateInstance(source.RootInternal().UIObjectInterfaceResolver.Resolve<TControl>());
-            (result as IUIObjectInternal).Init(source);
-            (result as IControlObjectInternal).Init(pattern, predicate);
-            (result as IUIObjectInternal).Init(depth ?? ((IUIObjectInternal)source).ControlSearchDepth, null);
-            return result;
-        }
-
-        /// <summary>
-        /// Gets all matching controls.
-        /// </summary>
-        /// <typeparam name="TControl">The control type.</typeparam>
-        /// <param name="pattern">The search pattern to locate the control.</param>
-        /// <param name="predicate">Additional control predicate in case the search pattern yields multiple matches.</param>
-        /// <param name="depth">The maximum search depth.</param>
-        /// <returns>The control enumeration.</returns>
-        public static IEnumerable<TControl> FindAll<TControl>(this IUIObject source, ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject
-        {
-            int next = 0;
-            while (true)
-            {
-                TControl result = source.Find<TControl>(pattern, predicate);
-                (result as IUIObjectInternal).Init(depth, null);
-                (result as IUIObjectInternal).Index = next++;
-                if (!result.Exists)
-                {
-                    break;
-                }
-
-                yield return result;
-            }
-        }
-    }
-}
 namespace Trumpf.Coparoo.Desktop.Core
 {
     using System;
@@ -86,7 +24,6 @@ namespace Trumpf.Coparoo.Desktop.Core
     using SmartBear.TestLeft.TestObjects;
     using Trumpf.Coparoo.Desktop.Waiting;
     using Trumpf.Coparoo.Desktop.Core.Waiting;
-    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     /// <summary>
     /// Base class of all page objects.
@@ -131,7 +68,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <summary>
         /// Gets the root node.
         /// </summary>
-        IUIObjectNode IUIObject.Node
+        IUIObjectNode IUIObjectInternal.Node
         {
             get { return node; }
         }
@@ -334,7 +271,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         {
             bool enable = parent.Root().Configuration.EnableImages;
             TNode node = new TNode();
-            ((IUIObjectNodeInternal)node).Init(parent.Node, GetHashCode(), enable, () => PageObjectSearchDepth, () => ControlSearchDepth);
+            ((IUIObjectNodeInternal)node).Init(parent.Node(), GetHashCode(), enable, () => PageObjectSearchDepth, () => ControlSearchDepth);
             Init(parent, node);
 
             return this;

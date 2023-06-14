@@ -15,16 +15,8 @@
 namespace Trumpf.Coparoo.Desktop
 {
     using System;
-    using System.Collections.Generic;
     using System.Drawing;
-
-    using Core;
     using Waiting;
-
-    // müssten raus
-    using SmartBear.TestLeft;
-    using SmartBear.TestLeft.TestObjects;
-
 
     public class Spezifisch : Attribute
     {
@@ -49,10 +41,10 @@ namespace Trumpf.Coparoo.Desktop
         ///// </summary>
         //[Spezifisch("ginge als object")]IUIObject Parent { get; }
 
-        /// <summary>
-        /// Gets the root node.
-        /// </summary>
-        [Spezifisch("ginge als object")] IUIObjectNode Node { get; }
+        ///// <summary>
+        ///// Gets the root node.
+        ///// </summary>
+        //[Spezifisch("ginge als object")] IUIObjectNode Node { get; }
 
         /// <summary>
         /// Gets a value indicating whether the UI object's node is visible on the screen.

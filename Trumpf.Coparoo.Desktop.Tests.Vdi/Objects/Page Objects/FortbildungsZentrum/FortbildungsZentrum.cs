@@ -16,6 +16,7 @@ namespace VDI.Coparoo.Desktop
 {
     using ControlObjects;
     using Trumpf.Coparoo.Desktop;
+    using Trumpf.Coparoo.Desktop.Extensions;
     using Trumpf.Coparoo.Desktop.Web;
 
     public class FortbildungsZentrum : PageObject, IChildOf<VDI>, IFortbildungsZentrum

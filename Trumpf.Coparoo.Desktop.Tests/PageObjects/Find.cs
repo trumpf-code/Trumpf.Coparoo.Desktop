@@ -17,6 +17,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
     using Coparoo.Desktop;
     using NUnit.Framework;
     using Trumpf.Coparoo.Desktop.Core;
+    using Trumpf.Coparoo.Desktop.Extensions;
     using WinForms;
 
     /// <summary>

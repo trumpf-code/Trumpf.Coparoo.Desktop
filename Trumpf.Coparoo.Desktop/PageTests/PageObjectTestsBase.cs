@@ -20,7 +20,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
     using Coparoo.Desktop;
     using Trumpf.Coparoo.Desktop.Core;
     using Trumpf.Coparoo.Desktop.Core.Waiting;
-    using Trumpf.Coparoo.Desktop.Diagnostics;
+    using Trumpf.Coparoo.Desktop.Extensions;
     using Trumpf.Coparoo.Desktop.Waiting;
 
     /// <summary>
