@@ -26,10 +26,11 @@ namespace Trumpf.Coparoo.Desktop
     using SmartBear.TestLeft.TestObjects;
 
 
-    public class Spezifisch : Attribute {
+    public class Spezifisch : Attribute
+    {
         public Spezifisch(string msg)
         {
-            
+
         }
     }
     public class ExtensionKandidate : Attribute { }
@@ -37,15 +38,16 @@ namespace Trumpf.Coparoo.Desktop
     public class EigentlichUnnötigFürCotrolObjectsAberDrinLassen : Attribute { }
     public class Lassen : Attribute { }
 
+
     /// <summary>
     /// Interface for the UI object base class.
     /// </summary>
     public interface IUIObject
     {
-        /// <summary>
-        /// Gets the parent of this UI object.
-        /// </summary>
-        [Spezifisch("ginge als object")]IUIObject Parent { get; }
+        ///// <summary>
+        ///// Gets the parent of this UI object.
+        ///// </summary>
+        //[Spezifisch("ginge als object")]IUIObject Parent { get; }
 
         /// <summary>
         /// Gets the root node.
@@ -55,7 +57,7 @@ namespace Trumpf.Coparoo.Desktop
         /// <summary>
         /// Gets a value indicating whether the UI object's node is visible on the screen.
         /// </summary>
-        [ExtensionKandidate]Wool VisibleOnScreen { get; }
+        [ExtensionKandidate] Wool VisibleOnScreen { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the UI object can respond to user interaction.
@@ -102,7 +104,7 @@ namespace Trumpf.Coparoo.Desktop
         /// </summary>
         /// <param name="pageType">Type of the page object.</param>
         /// <returns>Type of page object.</returns>
-        [EigentlichUnnötigFürCotrolObjectsAberDrinLassen]IPageObject On(Type pageType);
+        [EigentlichUnnötigFürCotrolObjectsAberDrinLassen] IPageObject On(Type pageType);
 
         /// <summary>
         /// Get the specific page object.

@@ -29,7 +29,7 @@ namespace Trumpf.Coparoo.Desktop.Diagnostics
         /// </summary>
         /// <returns>The root page object.</returns>
         public static IRootObject Root(this IUIObject source)
-            => source is IRootObject ? source as IRootObject : source.Parent.Root();
+            => source is IRootObject ? source as IRootObject : source.Parent().Root();
 
         /// <summary>
         /// Gets the type a type is resolved to.

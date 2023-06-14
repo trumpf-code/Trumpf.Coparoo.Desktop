@@ -24,6 +24,14 @@ namespace Trumpf.Coparoo.Desktop
     public static class IUIObjectExtensions
     {
         /// <summary>
+        /// Gets the parent of this UI object.
+        /// </summary>
+        public static IUIObject Parent(this IUIObject source)
+        {
+            return (source as IUIObjectInternal).Parent;
+        }
+
+        /// <summary>
         /// Gets the control.
         /// </summary>
         /// <typeparam name="TControl">The control type.</typeparam>
@@ -368,12 +376,12 @@ namespace Trumpf.Coparoo.Desktop.Core
                 IUIObject ancestor = this;
                 while (!ancestor.VisibleOnScreen)
                 {
-                    if (ancestor.Parent is IRootObject)
+                    if (ancestor.Parent() is IRootObject)
                     {
                         throw new InvalidOperationException("Could not scroll to " + GetType().Name + ". Found no parent object that is visible on screen.");
                     }
 
-                    ancestor = ancestor.Parent;
+                    ancestor = ancestor.Parent();
                 }
 
                 (ancestor as IUIObjectInternal).ScrollTo(this, timeout);

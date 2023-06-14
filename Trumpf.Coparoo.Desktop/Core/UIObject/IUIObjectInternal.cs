@@ -21,6 +21,9 @@ namespace Trumpf.Coparoo.Desktop.Core
     /// </summary>
     internal interface IUIObjectInternal : IUIObject
     {
+        // Aus IUIObject hierher verschoben
+        [Spezifisch("ginge als object")] IUIObject Parent { get; }
+
         /// <summary>
         /// Gets the root to control search depth.
         /// </summary>
