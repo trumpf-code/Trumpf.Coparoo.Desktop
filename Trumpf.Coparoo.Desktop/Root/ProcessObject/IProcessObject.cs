@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,12 +14,16 @@
 
 namespace Trumpf.Coparoo.Desktop
 {
-    using Core;
+    using SmartBear.TestLeft.TestObjects;
 
     /// <summary>
     /// Interface for the process object base class.
     /// </summary>
     public interface IProcessObject : IRootObject
     {
+        /// <summary>
+        /// Gets the top level windows.
+        /// </summary>
+        IWindow MainWindow { get; }
     }
 }

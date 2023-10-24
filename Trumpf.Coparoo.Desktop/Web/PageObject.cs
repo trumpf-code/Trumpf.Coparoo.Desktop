@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 namespace Trumpf.Coparoo.Desktop.Web
 {
     using Core;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     /// <summary>
     /// Base class of (node-less) page objects.
@@ -24,6 +25,6 @@ namespace Trumpf.Coparoo.Desktop.Web
         /// <summary>
         /// Gets the current URL.
         /// </summary>
-        public string TabUrl => (((IUIObjectInternal)this).Root as WebPageObject).Url;
+        public string TabUrl => (this.Root() as WebPageObject).Url;
     }
 }

@@ -12,21 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Trumpf.Coparoo.Desktop.Exceptions
+namespace Trumpf.Coparoo.Desktop.Extensions
 {
-    using System;
+    using Trumpf.Coparoo.Desktop.Core;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
-    /// <summary>
-    /// Control object not found exception class.
-    /// </summary>
-    public class ControlObjectNotFoundException : Exception
+    internal static class IUIObjectInternalExtensions
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControlObjectNotFoundException"/> class.
-        /// </summary>
-        public ControlObjectNotFoundException(Type ControlObjectType)
-            : base("Control object " + ControlObjectType.ToString() + " could not be resolved: no matching class with parameterless default constructor found; are all assemblies already loaded?")
+        public static IRootObjectInternal RootInternal(this IUIObjectInternal source)
         {
+            return source.Root() as IRootObjectInternal;
         }
     }
 }

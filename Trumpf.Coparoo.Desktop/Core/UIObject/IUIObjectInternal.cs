@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,11 +30,6 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// Gets the root to control search depth.
         /// </summary>
         int PageObjectSearchDepth { get; }
-
-        /// <summary>
-        /// Gets the root page object.
-        /// </summary>
-        IRootObject Root { get; }
 
         /// <summary>
         /// Sets the 0-based control index.

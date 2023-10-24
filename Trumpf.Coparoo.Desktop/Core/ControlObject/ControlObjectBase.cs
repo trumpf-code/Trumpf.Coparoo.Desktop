@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ namespace Trumpf.Coparoo.Desktop.Core
 
     using SmartBear.TestLeft;
     using SmartBear.TestLeft.TestObjects;
+    using Trumpf.Coparoo.Desktop.Extensions;
 
     /// <summary>
     /// Base class of all control objects.
@@ -45,7 +46,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The control object with the new type.</returns>
         public TControl Cast<TControl>() where TControl : IControlObject
         {
-            var result = (TControl)Activator.CreateInstance(RootInternal.UIObjectInterfaceResolver.Resolve<TControl>());
+            var result = (TControl)Activator.CreateInstance(this.RootInternal().UIObjectInterfaceResolver.Resolve<TControl>());
             (result as IUIObjectInternal).Init(Parent);
             (result as IControlObjectInternal).Init(InternalNode.SearchPattern, Node.Predicate);
             (result as IUIObjectInternal).Init(PageObjectSearchDepth, ControlSearchDepth);
@@ -58,7 +59,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// </summary>
         public virtual void Click()
         {
-            if (RootInternal.Configuration.EnableAutoScroll)
+            if (this.RootInternal().Configuration.EnableAutoScroll)
             {
                 ScrollTo();
             }

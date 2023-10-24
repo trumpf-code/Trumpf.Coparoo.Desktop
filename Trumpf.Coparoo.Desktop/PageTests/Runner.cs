@@ -1,4 +1,4 @@
-// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
     using Coparoo.Desktop;
     using Statistics;
     using Trumpf.Coparoo.Desktop.Core;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     /// <summary>
     /// Page object test class runner.
@@ -190,7 +191,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
 
         private static IRootObject GetRoot(IPageObject source)
         {
-            return ((IUIObjectInternal)source).Root;
+            return source.Root();
         }
 
         /// <summary>

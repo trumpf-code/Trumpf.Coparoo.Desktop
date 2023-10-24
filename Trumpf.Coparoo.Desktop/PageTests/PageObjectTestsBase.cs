@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
     using Coparoo.Desktop;
     using Trumpf.Coparoo.Desktop.Core;
     using Trumpf.Coparoo.Desktop.Core.Waiting;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
     using Trumpf.Coparoo.Desktop.Waiting;
 
     /// <summary>
@@ -81,7 +82,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// <param name="pageUnderTest">The page object to drive the test.</param>
         void IPageObjectTestsInternal.Init(IPageObject pageUnderTest)
         {
-            Configuration = new Lazy<Configuration>(() => (Page as IUIObjectInternal).Root.Configuration);
+            Configuration = new Lazy<Configuration>(() => Page.Root().Configuration);
             Page = (TPageUnderTest)pageUnderTest;
         }
 

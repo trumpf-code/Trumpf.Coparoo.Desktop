@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         private static Dictionary<Type, Type[]> childToparentsMap;
         private static Type[] pageObjectTypes;
         private static Type[] controlObjectTypes;
-        private static Type[] uiaObjectTypes;
+        private static Type[] uiObjectTypes;
         private static Func<Type, bool> pageObjectSelector = t => t.GetInterfaces().Contains(typeof(IPageObject));
         private static Func<Type, bool> controlObjectSelector = t => t.GetInterfaces().Contains(typeof(IControlObject));
         private static HashSet<Assembly> assembliesWithLoadErrors = new HashSet<Assembly>();
@@ -74,13 +74,13 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// <summary>
         /// Gets the page object types in the current app domain.
         /// </summary>
-        internal static Type[] PageObjectTypes
+        internal static Type[] PageObjectTypes()
             => pageObjectTypes ?? (pageObjectTypes = UIObjectTypes(pageObjectSelector));
 
         /// <summary>
         /// Gets the control object types in the current app domain.
         /// </summary>
-        internal static Type[] ControlObjectTypes
+        internal static Type[] ControlObjectTypes()
             => controlObjectTypes ?? (controlObjectTypes = UIObjectTypes(controlObjectSelector));
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// Compute the child to parent page object type map.
         /// </summary>
         private static Dictionary<Type, Type[]> ChildToParentUncached()
-            => PageObjectTypes
+            => PageObjectTypes()
                 .Select(pageObjectType => new { PageObjectType = pageObjectType, ChildOfInterfaces = pageObjectType.GetInterfaces().Where(f => f.IsGenericType && f.GetGenericTypeDefinition() == typeof(IChildOf<>)) })
                 .Where(e => !e.PageObjectType.IsAbstract && e.ChildOfInterfaces.Any())
                 .Select(e => new { e.PageObjectType, Parents = e.ChildOfInterfaces.Select(i => i.GenericTypeArguments.First()).ToArray() })
@@ -121,8 +121,8 @@ namespace Trumpf.Coparoo.Desktop.PageTests
                 }
             };
 
-            uiaObjectTypes = uiaObjectTypes ?? Types.Where(t => mainSelector(t)).ToArray();
-            return uiaObjectTypes.Where(selector).ToArray();
+            uiObjectTypes = uiObjectTypes ?? Types.Where(t => mainSelector(t)).ToArray();
+            return uiObjectTypes.Where(selector).ToArray();
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
             childToparentsMap = null;
             pageObjectTypes = null;
             controlObjectTypes = null;
-            uiaObjectTypes = null;
+            uiObjectTypes = null;
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
             }
             else
             {
-                var matches = PageObjectTypes.Where(p => parentType.IsAssignableFrom(p));
+                var matches = PageObjectTypes().Where(p => parentType.IsAssignableFrom(p));
                 if (matches.Count() == 0)
                 {
                     throw new ChildOfUsageException(parentType, "Could not resolve interface " + parentType.Name + " in " + typeof(IChildOf<>).Name + ".");

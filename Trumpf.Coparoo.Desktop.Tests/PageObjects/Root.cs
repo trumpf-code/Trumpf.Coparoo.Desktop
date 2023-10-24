@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
     using NUnit.Framework;
     using Coparoo.Desktop;
     using Trumpf.Coparoo.Desktop.WinForms;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     [TestFixture]
     public class Root
@@ -26,7 +27,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
         public void TheRootsRootIsTheRoot()
         {
             var a = new A();
-            var r = (a as IUIObjectInternal).Root;
+            var r = a.Root();
             Assert.AreEqual(a, r);
         }
 
@@ -35,7 +36,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
         {
             var a = new A();
             var b = a.On<B>();
-            Assert.AreEqual((a as IUIObjectInternal).Root, (b as IUIObjectInternal).Root);
+            Assert.AreEqual(a.Root(), b.Root());
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
         {
             var a = new A();
             var c = a.On<C>();
-            Assert.AreEqual((a as IUIObjectInternal).Root, (c as IUIObjectInternal).Root);
+            Assert.AreEqual(a.Root(), c.Root());
         }
 
         private class A : ProcessObject

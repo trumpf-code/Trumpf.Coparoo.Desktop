@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ namespace Trumpf.Coparoo.Desktop.Core
             }
             else
             {
-                controlTypesCache = controlTypesCache ?? PageTests.Locate.ControlObjectTypes.Where(e => e.IsAssignableFrom(e)).ToArray();
+                controlTypesCache = controlTypesCache ?? PageTests.Locate.ControlObjectTypes().Where(e => e.IsAssignableFrom(e)).ToArray();
 
                 Type[] matches = toResolve.GenericTypeArguments.Length == 0
                     ? controlTypesCache.Where(e => toResolve.IsAssignableFrom(e)).ToArray()
@@ -81,7 +81,10 @@ namespace Trumpf.Coparoo.Desktop.Core
                 }
                 else if (!matches.Any() && retryOnce)
                 {
+                    // reset caches
+                    PageTests.Locate.ClearCaches();
                     controlTypesCache = null;
+
                     result = ResolveControlType(toResolve, false);
                 }
                 else

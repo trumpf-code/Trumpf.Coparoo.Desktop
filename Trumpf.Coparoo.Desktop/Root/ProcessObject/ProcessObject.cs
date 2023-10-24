@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,6 +49,16 @@ namespace Trumpf.Coparoo.Desktop
 
         /// <inheritdoc/>
         public new IProcessObjectNode Node => base.Node;
+
+        /// <inheritdoc/>
+        public IWindow MainWindow
+            => Node.Process.Find<ITopLevelWindow>(new WindowPattern { WndCaption = MainWindowTitle });
+
+        /// <summary>
+        /// Gets the main window title.
+        /// </summary>
+        public virtual string MainWindowTitle
+            => System.Diagnostics.Process.GetProcessById(Process.ProcessId).MainWindowTitle;
 
         /// <inheritdoc/>
         protected override bool IsVisibleOnScreen

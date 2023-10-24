@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
     using System;
 
     using NUnit.Framework;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
     using Trumpf.Coparoo.Desktop.WinForms;
 
     [TestFixture]
@@ -62,6 +63,18 @@ namespace Trumpf.Coparoo.Desktop.Tests.Framework
             where I : IControlObject
             where I2 : IControlObject
         {
+        }
+
+        [Test]
+        public void WheAInterfaceTypeIsResolve_ThenTheReturnedTypeIsCorrect()
+        {
+            // Act
+            var rootObject = ProcessObject.Resolve<IA>();
+            var page = rootObject.On<IB>();
+            var type = page.Resolve<IG<IF>>();
+
+            // Check
+            Assert.AreEqual(typeof(G<IF>), type);
         }
 
         [Test]

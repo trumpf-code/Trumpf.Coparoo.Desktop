@@ -1,4 +1,4 @@
-﻿// Copyright 2016, 2017, 2018, 2019, 2020 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
+﻿// Copyright 2016 - 2023 TRUMPF Werkzeugmaschinen GmbH + Co. KG.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ namespace Trumpf.Coparoo.Desktop.Core
     using SmartBear.TestLeft.TestObjects;
     using Trumpf.Coparoo.Desktop.Waiting;
     using Trumpf.Coparoo.Desktop.Core.Waiting;
+    using Trumpf.Coparoo.Desktop.Diagnostics;
 
     /// <summary>
     /// Base class of all page objects.
@@ -40,14 +41,6 @@ namespace Trumpf.Coparoo.Desktop.Core
         private IUIObjectNode node;
 
         /// <summary>
-        /// Gets the internal root node.
-        /// </summary>
-        internal IRootObjectInternal RootInternal
-        {
-            get { return ((this as IUIObjectInternal).Root as IRootObjectInternal); }
-        }
-
-        /// <summary>
         /// Gets the root to control search depth.
         /// </summary>
         int IUIObjectInternal.PageObjectSearchDepth => PageObjectSearchDepth;
@@ -55,7 +48,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <summary>
         /// Gets the root to control search depth.
         /// </summary>
-        protected virtual int PageObjectSearchDepth => mPageObjectSearchDepth ?? RootInternal.Configuration.PageObjectSearchDepth;
+        protected virtual int PageObjectSearchDepth => mPageObjectSearchDepth ?? this.RootInternal().Configuration.PageObjectSearchDepth;
 
         /// <summary>
         /// Gets the root to control search depth.
@@ -65,16 +58,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <summary>
         /// Gets the root to control search depth.
         /// </summary>
-        protected virtual int ControlSearchDepth => mControlObjectSearchDepth ?? RootInternal.Configuration.ControlSearchDepth;
-
-        /// <summary>
-        /// Gets the root page object.
-        /// </summary>
-        /// <returns>The root page object.</returns>
-        IRootObject IUIObjectInternal.Root
-        {
-            get { return this is IRootObject ? this as IRootObject : (Parent as IUIObjectInternal).Root; }
-        }
+        protected virtual int ControlSearchDepth => mControlObjectSearchDepth ?? this.RootInternal().Configuration.ControlSearchDepth;
 
         /// <summary>
         /// Sets the 0-based control index.
@@ -233,7 +217,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The page object.</returns>
         public TPageObject On<TPageObject>(Predicate<TPageObject> condition) where TPageObject : IPageObject
         {
-            return (RootInternal).PageObjectLocator.Find(condition);
+            return this.RootInternal().PageObjectLocator.Find(condition);
         }
 
         /// <inheritdoc/>
@@ -288,7 +272,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The initialized page object.</returns>
         internal virtual IUIObject Init(IUIObject parent)
         {
-            bool enable = ((IRootObjectInternal)(parent as IUIObjectInternal).Root).Configuration.EnableImages;
+            bool enable = parent.Root().Configuration.EnableImages;
             TNode node = new TNode();
             ((IUIObjectNodeInternal)node).Init(parent.Node, GetHashCode(), enable, () => PageObjectSearchDepth, () => ControlSearchDepth);
             Init(parent, node);
@@ -305,7 +289,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The wrapped object.</returns>
         protected IAwait<T> Await<T>(Func<T> function, string name)
         {
-            return RootInternal.Await(function, name);
+            return this.RootInternal().Await(function, name);
         }
 
         /// <summary>
@@ -327,7 +311,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The control object.</returns>
         public virtual TControl Find<TControl>(ISearchPattern pattern = null, Predicate<IControl> predicate = null, int? depth = null) where TControl : IControlObject
         {
-            var result = (TControl)Activator.CreateInstance(((IRootObjectInternal)RootInternal).UIObjectInterfaceResolver.Resolve<TControl>());
+            var result = (TControl)Activator.CreateInstance(this.RootInternal().UIObjectInterfaceResolver.Resolve<TControl>());
             (result as IUIObjectInternal).Init(this);
             (result as IControlObjectInternal).Init(pattern, predicate);
             (result as IUIObjectInternal).Init(depth ?? ControlSearchDepth, null);
@@ -362,7 +346,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <inheritdoc/>
         public virtual void ScrollTo()
         {
-            ScrollTo(RootInternal.Configuration.ScrollDetectionTimeout);
+            ScrollTo(this.RootInternal().Configuration.ScrollDetectionTimeout);
         }
 
         /// <inheritdoc/>
@@ -390,9 +374,9 @@ namespace Trumpf.Coparoo.Desktop.Core
         void IUIObjectInternal.ScrollTo(IUIObject target, TimeSpan timeout)
         {
             Node.Cast<IControl>().Keys("[Home]");
-            Thread.Sleep(RootInternal.Configuration.ScrollSleep);
+            Thread.Sleep(this.RootInternal().Configuration.ScrollSleep);
 
-            foreach (var i in Enumerable.Range(0, RootInternal.Configuration.MaximumScrolls))
+            foreach (var i in Enumerable.Range(0, this.RootInternal().Configuration.MaximumScrolls))
             {
                 if (target.VisibleOnScreen.TryWaitFor(timeout))
                 {
@@ -400,10 +384,10 @@ namespace Trumpf.Coparoo.Desktop.Core
                 }
 
                 Node.Cast<IControl>().Keys("[Down]"); // or [PageDown]
-                Thread.Sleep(RootInternal.Configuration.ScrollSleep);
+                Thread.Sleep(this.RootInternal().Configuration.ScrollSleep);
             }
 
-            throw new InvalidOperationException("Couln't get " + GetType().Name + " visible on screen by scrolling from top to the bottom (ties " + RootInternal.Configuration.MaximumScrolls + " times).");
+            throw new InvalidOperationException("Couln't get " + GetType().Name + " visible on screen by scrolling from top to the bottom (ties " + this.RootInternal().Configuration.MaximumScrolls + " times).");
         }
 
         /// <summary>
@@ -414,7 +398,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The wrapped bool.</returns>
         private Wool WoolFor(Func<bool> function, string name)
         {
-            return new Wool(new Await<bool>(function, name, GetType(), () => RootInternal.Configuration.WaitTimeout, () => RootInternal.Configuration.PositiveWaitTimeout, () => RootInternal.Configuration.ShowWaitingDialog), () => TrySnap(), () => (this as IUIObjectInternal).TryUnsnap());
+            return new Wool(new Await<bool>(function, name, GetType(), () => this.RootInternal().Configuration.WaitTimeout, () => this.RootInternal().Configuration.PositiveWaitTimeout, () => this.RootInternal().Configuration.ShowWaitingDialog), () => TrySnap(), () => (this as IUIObjectInternal).TryUnsnap());
         }
     }
 }
