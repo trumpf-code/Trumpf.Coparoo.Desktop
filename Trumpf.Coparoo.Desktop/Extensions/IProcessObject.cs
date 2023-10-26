@@ -54,10 +54,9 @@ namespace Trumpf.Coparoo.Desktop.Extensions
         /// <param name="maxAttempts">The maximum number of retries.</param>
         /// <param name="retryInterval">The waiting time between retries.</param>
         public static void InitializeLocalDriver(this IProcessObject processObject, int maxAttempts, TimeSpan retryInterval)
-            => Do(
+            => Retry(
                 () => { processObject.Driver = defaultDriverCreator(); },
                 defaultRetryCondition,
-                () => { },
                 retryInterval,
                 maxAttempts
                 );
@@ -66,27 +65,12 @@ namespace Trumpf.Coparoo.Desktop.Extensions
         /// Retry on exception. Before retry execute recovery action.
         /// </summary>
         /// <typeparam name="E">The exception to retry on.</typeparam>
-        /// <param name="action">The action to execute and potentially retry.</param>
-        /// <param name="when">The exception condition.</param>
-        /// <param name="recoveryAction">The recovery action to execute before a retry.</param>
-        /// <param name="retryInterval">The retry interval.</param>
-        /// <param name="maxAttempts">The number of attempts (1 = no retry).</param>
-        private static void Do<E>(Action action, Predicate<E> when, Action recoveryAction, TimeSpan retryInterval, int maxAttempts) where E : Exception
-        {
-            RetryAndRecover(() => { action(); return 0; }, when, recoveryAction, retryInterval, maxAttempts);
-        }
-
-        /// <summary>
-        /// Retry on exception. Before retry execute recovery action.
-        /// </summary>
-        /// <typeparam name="E">The exception to retry on.</typeparam>
         /// <param name="action">The action.</param>
         /// <param name="when">The exception condition.</param>
-        /// <param name="recoveryAction">The recovery action to execute before a retry.</param>
         /// <param name="retryInterval">The retry interval.</param>
         /// <param name="maxAttempts">The number of attempts (1 = no retry).</param>
         /// <returns>The result.</returns>
-        private static void RetryAndRecover<E>(Action action, Predicate<E> when, Action recoveryAction, TimeSpan retryInterval, int maxAttempts) where E : Exception
+        private static void Retry<E>(Action action, Predicate<E> when, TimeSpan retryInterval, int maxAttempts) where E : Exception
         {
             int remainingAttempts = maxAttempts;
             var exceptions = new List<Exception>();
@@ -103,9 +87,7 @@ namespace Trumpf.Coparoo.Desktop.Extensions
                     exceptions.Add(e);
                     if (remainingAttempts-- > 0 && (when == null || when(e)))
                     {
-                        Thread.Sleep((int)retryInterval.TotalMilliseconds / 2);
-                        recoveryAction?.Invoke();
-                        Thread.Sleep((int)retryInterval.TotalMilliseconds / 2);
+                        Thread.Sleep(retryInterval);
                     }
                     else
                     {
