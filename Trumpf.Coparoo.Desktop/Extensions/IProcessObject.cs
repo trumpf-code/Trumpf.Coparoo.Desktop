@@ -17,29 +17,21 @@ namespace Trumpf.Coparoo.Desktop.Extensions
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.ServiceProcess;
     using System.Threading;
 
     using SmartBear.TestLeft;
-    using Trumpf.Coparoo.Desktop.Waiting;
 
     /// <summary>
     /// Extension methods for process objects.
     /// </summary>
     public static class IProcessObjectExtensions
     {
-        private static readonly string[] smartbearProcesses = new string[] { "TCHookX64", "TestExecute" };
-
-        private const string ServiceName = "TestComplete 12 Service";
-
         private static readonly Predicate<Exception> defaultRetryCondition =
                 e =>
                     e.Message.Contains("No more instances can be launched at the moment") ||
                     e.Message.Contains("Error code: 127") ||
                     e.Message.Contains("The server committed a protocol violation") ||
-                    e.Message.Contains("The process TestExecute started, but the REST server did not start") |
+                    e.Message.Contains("The process TestExecute started, but the REST server did not start") ||
                     (e.GetType() == typeof(Win32Exception) && e.Message.Contains("Access is denied")) ||
                     (e.GetType() == typeof(Win32Exception) && e.Message.Contains("A 32 bit processes cannot access modules of a 64 bit process")) ||
                     (e.GetType() == typeof(ApiException) && e.Message.Contains("TestExecute failed to reach the 'running' state"))
@@ -71,31 +63,6 @@ namespace Trumpf.Coparoo.Desktop.Extensions
                 );
 
         /// <summary>
-        /// Initializes the process object.
-        /// </summary>
-        /// <param name="processObject">The process object to initialize.</param>
-        /// <param name="driverCreator">The driver creator.</param>
-        /// <param name="retryOnCondition">The retry condition.</param>
-        /// <param name="maxAttempts">The maximum number of retries.</param>
-        /// <param name="retryInterval">The waiting time between retries.</param>
-        public static void HardInit(this IProcessObject processObject, Func<IDriver> driverCreator = null, Predicate<Exception> retryOnCondition = null, int maxAttempts = 5, TimeSpan retryInterval = default)
-        {
-            driverCreator = driverCreator ?? defaultDriverCreator;
-            retryOnCondition = retryOnCondition ?? defaultRetryCondition;
-            retryInterval = retryInterval != default ? retryInterval : TimeSpan.FromMinutes(1);
-
-            StopServiceAndKillSmartbearProcesses();
-
-            Do(
-                () => { processObject.Driver = driverCreator(); },
-                retryOnCondition,
-                StopServiceAndKillSmartbearProcesses,
-                retryInterval,
-                maxAttempts
-                );
-        }
-
-        /// <summary>
         /// Retry on exception. Before retry execute recovery action.
         /// </summary>
         /// <typeparam name="E">The exception to retry on.</typeparam>
@@ -110,69 +77,16 @@ namespace Trumpf.Coparoo.Desktop.Extensions
         }
 
         /// <summary>
-        /// Restart Test Execute
-        /// </summary>
-        private static void StopServiceAndKillSmartbearProcesses()
-        {
-            // stop test complete service
-            try
-            {
-                ServiceController service = new ServiceController(ServiceName);
-                if (service.Status != ServiceControllerStatus.Stopped && service.Status != ServiceControllerStatus.StopPending)
-                {
-                    service.Stop();
-                    service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                // service is not available
-            }
-            catch (Win32Exception)
-            {
-                // system API failure
-            }
-            catch (ArgumentException)
-            {
-                // invalid name
-            }
-
-            // kill remaining smartbear processes
-            foreach (var name in smartbearProcesses)
-            {
-                foreach (var process in Process.GetProcessesByName(name))
-                {
-                    try
-                    {
-                        process.CloseMainWindow();
-                        Thread.Sleep(1000);
-
-                        if (!process.HasExited)
-                        {
-                            process.Kill();
-                        }
-                    }
-                    catch (InvalidOperationException)
-                    {
-                    }
-                }
-
-                Wait.For(() => Process.GetProcessesByName(name).Count() == 0);
-            }
-        }
-
-        /// <summary>
         /// Retry on exception. Before retry execute recovery action.
         /// </summary>
-        /// <typeparam name="T">The return type.</typeparam>
         /// <typeparam name="E">The exception to retry on.</typeparam>
-        /// <param name="function">The action to execute and potentially retry.</param>
+        /// <param name="action">The action.</param>
         /// <param name="when">The exception condition.</param>
         /// <param name="recoveryAction">The recovery action to execute before a retry.</param>
         /// <param name="retryInterval">The retry interval.</param>
         /// <param name="maxAttempts">The number of attempts (1 = no retry).</param>
         /// <returns>The result.</returns>
-        private static T RetryAndRecover<T, E>(Func<T> function, Predicate<E> when, Action recoveryAction, TimeSpan retryInterval, int maxAttempts) where E : Exception
+        private static void RetryAndRecover<E>(Action action, Predicate<E> when, Action recoveryAction, TimeSpan retryInterval, int maxAttempts) where E : Exception
         {
             int remainingAttempts = maxAttempts;
             var exceptions = new List<Exception>();
@@ -181,7 +95,8 @@ namespace Trumpf.Coparoo.Desktop.Extensions
             {
                 try
                 {
-                    return function();
+                    action();
+                    return;
                 }
                 catch (E e)
                 {
