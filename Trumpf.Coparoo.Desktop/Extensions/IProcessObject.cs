@@ -39,10 +39,36 @@ namespace Trumpf.Coparoo.Desktop.Extensions
                     e.Message.Contains("No more instances can be launched at the moment") ||
                     e.Message.Contains("Error code: 127") ||
                     e.Message.Contains("The server committed a protocol violation") ||
-                    e.Message.Contains("The process TestExecute started, but the REST server did not start")
+                    e.Message.Contains("The process TestExecute started, but the REST server did not start") |
+                    (e.GetType() == typeof(Win32Exception) && e.Message.Contains("Access is denied")) ||
+                    (e.GetType() == typeof(Win32Exception) && e.Message.Contains("A 32 bit processes cannot access modules of a 64 bit process")) ||
+                    (e.GetType() == typeof(ApiException) && e.Message.Contains("TestExecute failed to reach the 'running' state"))
                 ;
 
         private static readonly Func<IDriver> defaultDriverCreator = () => new LocalDriver();
+
+        /// <summary>
+        /// Initializes process object's local driver.
+        /// Retries initialization up 100 times and wait 10 seconds between retries.
+        /// </summary>
+        /// <param name="processObject">The process object to initialize.</param>
+        public static void InitializeLocalDriver(this IProcessObject processObject)
+            => InitializeLocalDriver(processObject, 100, TimeSpan.FromSeconds(10));
+
+        /// <summary>
+        /// Initializes process object's local driver.
+        /// </summary>
+        /// <param name="processObject">The process object to initialize.</param>
+        /// <param name="maxAttempts">The maximum number of retries.</param>
+        /// <param name="retryInterval">The waiting time between retries.</param>
+        public static void InitializeLocalDriver(this IProcessObject processObject, int maxAttempts, TimeSpan retryInterval)
+            => Do(
+                () => { processObject.Driver = defaultDriverCreator(); },
+                defaultRetryCondition,
+                () => { },
+                retryInterval,
+                maxAttempts
+                );
 
         /// <summary>
         /// Initializes the process object.
@@ -52,14 +78,21 @@ namespace Trumpf.Coparoo.Desktop.Extensions
         /// <param name="retryOnCondition">The retry condition.</param>
         /// <param name="maxAttempts">The maximum number of retries.</param>
         /// <param name="retryInterval">The waiting time between retries.</param>
-        public static void HardInit(this IProcessObject processObject, Func<IDriver> driverCreator = null, Predicate<Exception> retryOnCondition = null, int maxAttempts = 5, TimeSpan retryInterval = default(TimeSpan))
+        public static void HardInit(this IProcessObject processObject, Func<IDriver> driverCreator = null, Predicate<Exception> retryOnCondition = null, int maxAttempts = 5, TimeSpan retryInterval = default)
         {
             driverCreator = driverCreator ?? defaultDriverCreator;
             retryOnCondition = retryOnCondition ?? defaultRetryCondition;
-            retryInterval = retryInterval != default(TimeSpan) ? retryInterval : TimeSpan.FromMinutes(1);
+            retryInterval = retryInterval != default ? retryInterval : TimeSpan.FromMinutes(1);
 
             StopServiceAndKillSmartbearProcesses();
-            Do(() => { processObject.Driver = driverCreator(); }, retryOnCondition, StopServiceAndKillSmartbearProcesses, retryInterval, maxAttempts);
+
+            Do(
+                () => { processObject.Driver = driverCreator(); },
+                retryOnCondition,
+                StopServiceAndKillSmartbearProcesses,
+                retryInterval,
+                maxAttempts
+                );
         }
 
         /// <summary>

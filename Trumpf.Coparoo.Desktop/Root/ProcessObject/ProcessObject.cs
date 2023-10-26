@@ -52,13 +52,7 @@ namespace Trumpf.Coparoo.Desktop
 
         /// <inheritdoc/>
         public IWindow MainWindow
-            => Node.Process.Find<ITopLevelWindow>(new WindowPattern { WndCaption = MainWindowTitle });
-
-        /// <summary>
-        /// Gets the main window title.
-        /// </summary>
-        public virtual string MainWindowTitle
-            => System.Diagnostics.Process.GetProcessById(Process.ProcessId).MainWindowTitle;
+            => Node.Process.Find<ITopLevelWindow>(new WindowPattern { WndCaption = System.Diagnostics.Process.GetProcessById(Process.ProcessId).MainWindowTitle });
 
         /// <inheritdoc/>
         protected override bool IsVisibleOnScreen
