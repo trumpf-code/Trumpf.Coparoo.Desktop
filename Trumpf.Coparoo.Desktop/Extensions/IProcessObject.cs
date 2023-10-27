@@ -53,7 +53,8 @@ namespace Trumpf.Coparoo.Desktop.Extensions
         /// <param name="processObject">The process object to initialize.</param>
         /// <param name="maxAttempts">The maximum number of retries.</param>
         /// <param name="retryInterval">The waiting time between retries.</param>
-        public static void InitializeLocalDriver(this IProcessObject processObject, int maxAttempts, TimeSpan retryInterval)
+        /// <returns>List of eexceptions that caused retries.</returns>
+        public static List<Exception> InitializeLocalDriver(this IProcessObject processObject, int maxAttempts, TimeSpan retryInterval)
             => Retry(
                 () => { processObject.Driver = defaultDriverCreator(); },
                 defaultRetryCondition,
@@ -69,8 +70,8 @@ namespace Trumpf.Coparoo.Desktop.Extensions
         /// <param name="when">The exception condition.</param>
         /// <param name="retryInterval">The retry interval.</param>
         /// <param name="maxAttempts">The number of attempts (1 = no retry).</param>
-        /// <returns>The result.</returns>
-        private static void Retry<E>(Action action, Predicate<E> when, TimeSpan retryInterval, int maxAttempts) where E : Exception
+        /// <returns>List of eexceptions that caused retries.</returns>
+        private static List<Exception> Retry<E>(Action action, Predicate<E> when, TimeSpan retryInterval, int maxAttempts) where E : Exception
         {
             int remainingAttempts = maxAttempts;
             var exceptions = new List<Exception>();
@@ -80,7 +81,7 @@ namespace Trumpf.Coparoo.Desktop.Extensions
                 try
                 {
                     action();
-                    return;
+                    return exceptions;
                 }
                 catch (E e)
                 {
