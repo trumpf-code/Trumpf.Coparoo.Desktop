@@ -29,7 +29,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
-		<Version>1.2.17</Version>
+		<Version>1.3.0-beta02</Version>
 		<RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
@@ -38,7 +38,7 @@
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<DefineConstants>TRACE;DEBUG;NET451</DefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<PropertyGroup Condition="'$(Configuration)|$(platform)'=='Release|AnyCPU'">
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<SignAssembly Condition="Exists('..\..\Keys\Key.snk')">true</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\..\Keys\Key.snk</AssemblyOriginatorKeyFile>

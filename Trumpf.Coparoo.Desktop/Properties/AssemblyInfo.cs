@@ -16,7 +16,7 @@
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
 
-// #define ENABLE_PUBLIC_KEY
+#define ENABLE_PUBLIC_KEY
 using System.Runtime.CompilerServices;
 
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
