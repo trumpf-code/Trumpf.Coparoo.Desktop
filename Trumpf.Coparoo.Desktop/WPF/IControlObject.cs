@@ -15,7 +15,7 @@
 namespace Trumpf.Coparoo.Desktop.WPF
 {
     /// <summary>
-    /// Interface for a control object for <see cref="System.Windows.Controls.Control"/>.
+    /// Interface for a control object for System.Windows.Controls.Control.
     /// </summary>
     public interface IControlObject : Core.IControlObject
     {

@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<!-- project information -->
-		<TargetFramework>net8.0-windows</TargetFramework>
+		<TargetFrameworks>net451;net8.0-windows</TargetFrameworks>
 		<DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
-
     <UseWindowsForms>true</UseWindowsForms>
-
     <IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<DebugType>embedded</DebugType>
