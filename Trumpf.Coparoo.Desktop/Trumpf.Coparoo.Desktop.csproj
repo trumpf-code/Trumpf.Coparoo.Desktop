@@ -36,7 +36,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DefineConstants>TRACE;DEBUG;NET451</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly Condition="Exists('..\..\Keys\Key.snk')">true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Keys\Key.snk</AssemblyOriginatorKeyFile>
