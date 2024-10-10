@@ -119,8 +119,8 @@ namespace Trumpf.Coparoo.Desktop.WPF
         /// </summary>
         /// <param name="clrFullClassName">The full class name.</param>
         /// <returns>The search pattern.</returns>
-        public Search ByClrFullClassName(string clrFullClassName)
-            => Any.ByClrFullClassName(clrFullClassName);
+        public static Search ByClrFullClassName(string clrFullClassName)
+            => Any.AndByClrFullClassName(clrFullClassName);
 
         /// <summary>
         /// Create a search pattern for the given constraint by control name.
