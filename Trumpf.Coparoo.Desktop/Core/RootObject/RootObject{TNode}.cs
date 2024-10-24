@@ -24,6 +24,7 @@ namespace Trumpf.Coparoo.Desktop.Core
     using Trumpf.Coparoo.Desktop.Waiting;
     using Trumpf.Coparoo.Desktop.Core.Waiting;
     using System.Collections.Generic;
+    using System.Reflection;
 
     /// <summary>
     /// Base class for root page objects.
@@ -243,6 +244,12 @@ namespace Trumpf.Coparoo.Desktop.Core
                 Trace.WriteLine($"Could not check type '{e.GetType().FullName}' for a default constructor: {exception.Message}");
                 return false;
             }
+        }
+
+        /// <inheritdoc/>
+        public void AddAssembliesForTypeResolving(IEnumerable<Assembly> assemblies)
+        {
+            PageTests.Locate.AssembliesToResolveTypes.AddRange(assemblies);
         }
     }
 }

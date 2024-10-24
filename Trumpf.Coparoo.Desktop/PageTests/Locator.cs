@@ -36,6 +36,9 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         private static Func<Type, bool> controlObjectSelector = t => t.GetInterfaces().Contains(typeof(IControlObject));
         private static HashSet<Assembly> assembliesWithLoadErrors = new HashSet<Assembly>();
 
+        public static List<Assembly> AssembliesToResolveTypes = new List<Assembly>();
+
+        private static IEnumerable<Assembly> appDomainAssembliesNotInResolveTypes => AppDomain.CurrentDomain.GetAssemblies().Where(a => AssembliesToResolveTypes.Any(assembly => assembly.GetName().Name == a.GetName().Name) == false);
         /// <summary>
         /// Gets the retrievable app domain types.
         /// </summary>
@@ -43,7 +46,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         {
             get
             {
-                return AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly =>
+                return AssembliesToResolveTypes.Union(appDomainAssembliesNotInResolveTypes).SelectMany(assembly =>
                 {
                     try
                     {

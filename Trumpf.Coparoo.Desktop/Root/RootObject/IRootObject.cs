@@ -15,6 +15,8 @@
 namespace Trumpf.Coparoo.Desktop
 {
     using SmartBear.TestLeft;
+    using System.Collections.Generic;
+    using System.Reflection;
 
     /// <summary>
     /// Interface for root objects.
@@ -58,5 +60,11 @@ namespace Trumpf.Coparoo.Desktop
         /// <param name="dotBinaryPath">The hint path to the dot.exe binary file.</param>
         /// <returns>The absolute file name that was written.</returns>
         string WritePdfTree(string filename = "PageObjectTree.pdf", string dotBinaryPath = @"C:\Program Files (x86)\Graphviz2.38\bin\dot.exe");
+
+        /// <summary>
+        /// Optionally sets the assemblies which should be used to check for PageObjects and ControlObjects and searched Types
+        /// </summary>
+        /// <param name="assemblies"></param>
+        void AddAssembliesForTypeResolving(IEnumerable<Assembly> assemblies);
     }
 }

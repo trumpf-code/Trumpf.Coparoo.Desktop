@@ -1,59 +1,57 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <!-- project information -->
-    <TargetFrameworks>net451;net8.0-windows</TargetFrameworks>
-    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
-    <UseWindowsForms>true</UseWindowsForms>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <DebugType>embedded</DebugType>
-    <Optimize>false</Optimize>
+	<PropertyGroup>
+		<!-- project information -->
+		<TargetFrameworks>net472;net8.0-windows</TargetFrameworks>
+		<DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+		<UseWindowsForms>true</UseWindowsForms>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<DebugType>embedded</DebugType>
+		<Optimize>false</Optimize>
 
-    <!-- nupkg information -->
-    <PackageId>Trumpf.Coparoo.Desktop</PackageId>
-    <Title>Trumpf.Coparoo.Desktop Library for .NET</Title>
-    <Authors>Alexander Kaiser</Authors>
-    <Company>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Company>
-    <Product>Trumpf Coparoo Desktop</Product>
-    <Description>Trumpf.Coparoo.Desktop is a .NET library for C# that helps you write fast, maintainable, robust and fluent UI tests for web and desktop apps based on the control/page/root-object (Coparoo) pattern. It is built on top of SmartBear's commercial TestLeft® tool; more details on https://smartbear.de/product/testleft.</Description>
-    <Summary>
-      Trumpf.Coparoo.Desktop is a .NET library for C# that helps you write fast, maintainable, robust and fluent UI tests for web and desktop apps based on the control/page/root-object (Coparoo) pattern.
-      It is built on top of SmartBear's commercial TestLeft® tool; more details on https://smartbear.de/product/testleft.
-    </Summary>
-    <Copyright>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>testleft, automation, PageObject, test, ui</PackageTags>
-    <NeutralLanguage>en</NeutralLanguage>
-    <PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
-    <PackageIcon>logo.png</PackageIcon>
-    <Version>1.4.0</Version>
+		<!-- nupkg information -->
+		<PackageId>Trumpf.Coparoo.Desktop</PackageId>
+		<Title>Trumpf.Coparoo.Desktop Library for .NET</Title>
+		<Authors>Alexander Kaiser</Authors>
+		<Company>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Company>
+		<Product>Trumpf Coparoo Desktop</Product>
+		<Description>Trumpf.Coparoo.Desktop is a .NET library for C# that helps you write fast, maintainable, robust and fluent UI tests for web and desktop apps based on the control/page/root-object (Coparoo) pattern. It is built on top of SmartBear's commercial TestLeft® tool; more details on https://smartbear.de/product/testleft.</Description>
+		<Summary>
+			Trumpf.Coparoo.Desktop is a .NET library for C# that helps you write fast, maintainable, robust and fluent UI tests for web and desktop apps based on the control/page/root-object (Coparoo) pattern.
+			It is built on top of SmartBear's commercial TestLeft® tool; more details on https://smartbear.de/product/testleft.
+		</Summary>
+		<Copyright>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Copyright>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>testleft, automation, PageObject, test, ui</PackageTags>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
+		<PackageIcon>logo.png</PackageIcon>
+    <Version>1.5.0</Version>
     <RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <SignAssembly Condition="Exists('..\..\Keys\Key.snk')">true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Keys\Key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>TRACE;DEBUG</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup>
+		<SignAssembly Condition="Exists('..\..\Key.snk')">true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\Key.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
 
-  <!-- reference information -->
-  <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
-    <None Include="$(SolutionDir)Resources\logo.png" Pack="true" PackagePath="" />
-    <None Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath="" />
+	<!-- reference information -->
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\Resources\logo.png" Pack="true" PackagePath="" />
+		<None Include="..\LICENSE" Pack="true" PackagePath="" />
     <PackageReference Include="SmartBear.TestLeft" Version="4.10.999.11" />
     <PackageReference Include="Stashbox" Version="2.7.8" />
-  </ItemGroup>
+	</ItemGroup>
 
-  <!-- signing -->
-  <Target Name="PostBuildTarget" AfterTargets="AfterBuild">
-    <Exec Condition="Exists('..\..\Keys\Key.snk')" Command="echo KEY FOUND" />
-    <Exec Condition="!Exists('..\..\Keys\Key.snk')" Command="echo NO KEY FOUND" />
-  </Target>
+	<!-- log whether key exists -->
+	<Target Name="PostBuildTarget" AfterTargets="AfterBuild">
+		<Exec Condition="Exists('..\..\Key.snk')" Command="echo KEY FOUND" />
+		<Exec Condition="!Exists('..\..\Key.snk')" Command="echo NO KEY FOUND" />
+	</Target>
 </Project>

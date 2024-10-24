@@ -17,7 +17,6 @@ namespace Trumpf.Coparoo.Desktop
     using System;
 
     using Stashbox;
-    using Trumpf.Coparoo.Desktop.Core.Waiting;
     using Trumpf.Coparoo.Desktop.Waiting;
 
     /// <summary>

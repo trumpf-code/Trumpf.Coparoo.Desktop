@@ -32,6 +32,7 @@ namespace VDI.Coparoo.Desktop
             Configuration.ShowWaitingDialog = true;
             Configuration.ControlSearchDepth = 10;
             Configuration.PageObjectSearchDepth = 2;
+            Configuration.DialogWaiter = new DialogWaiter();
         }
     }
 }
