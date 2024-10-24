@@ -34,7 +34,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <DefineConstants>TRACE;DEBUG;NET451</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

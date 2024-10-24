@@ -229,7 +229,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The wrapped object.</returns>
         IAwait<T> IRootObjectInternal.Await<T>(Func<T> function, string name)
         {
-            return new Await<T>(function, name, GetType(), () => Configuration.WaitTimeout, () => Configuration.PositiveWaitTimeout, () => Configuration.ShowWaitingDialog);
+            return new Await<T>(function, name, GetType(), () => Configuration.WaitTimeout, () => Configuration.PositiveWaitTimeout, () => Configuration.ShowWaitingDialog, Configuration.DialogWaiter);
         }
 
         private static bool IsDefaultConstructible(Type e)

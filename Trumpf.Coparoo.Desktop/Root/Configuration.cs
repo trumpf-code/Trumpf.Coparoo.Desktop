@@ -17,6 +17,8 @@ namespace Trumpf.Coparoo.Desktop
     using System;
 
     using Stashbox;
+    using Trumpf.Coparoo.Desktop.Core.Waiting;
+    using Trumpf.Coparoo.Desktop.Waiting;
 
     /// <summary>
     /// The configuration class.
@@ -140,6 +142,11 @@ namespace Trumpf.Coparoo.Desktop
         {
             get { return logAction ?? (line => System.Diagnostics.Trace.WriteLine(line)); }
             set { logAction = value; }
-        }    
+        }
+
+        /// <summary>
+        /// Gets or set the dialog dialogWaiter.
+        /// </summary>
+        public IDialogWaiter DialogWaiter { get; set; } = null;
     }
 }

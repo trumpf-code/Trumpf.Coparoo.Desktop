@@ -111,7 +111,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         protected IAwait<T2> Await<T2>(Func<T2> function)
         {
             var configuration = Configuration.Value;
-            return new Await<T2>(function, "Element", GetType(), () => configuration.WaitTimeout, () => configuration.PositiveWaitTimeout, () => configuration.ShowWaitingDialog);
+            return new Await<T2>(function, "Element", GetType(), () => configuration.WaitTimeout, () => configuration.PositiveWaitTimeout, () => configuration.ShowWaitingDialog, configuration.DialogWaiter);
         }
     }
 }

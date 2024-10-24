@@ -398,7 +398,9 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The wrapped bool.</returns>
         private Wool WoolFor(Func<bool> function, string name)
         {
-            return new Wool(new Await<bool>(function, name, GetType(), () => this.RootInternal().Configuration.WaitTimeout, () => this.RootInternal().Configuration.PositiveWaitTimeout, () => this.RootInternal().Configuration.ShowWaitingDialog), () => TrySnap(), () => (this as IUIObjectInternal).TryUnsnap());
+            var configuration = this.RootInternal().Configuration;
+            Await<bool> waiter = new Await<bool>(function, name, GetType(), () => configuration.WaitTimeout, () => configuration.PositiveWaitTimeout, () => configuration.ShowWaitingDialog, configuration.DialogWaiter);
+            return new Wool(waiter, () => TrySnap(), () => (this as IUIObjectInternal).TryUnsnap());
         }
     }
 }
