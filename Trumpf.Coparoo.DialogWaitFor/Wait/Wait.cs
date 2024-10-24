@@ -80,9 +80,11 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// Waits until a function's return value changes.
         /// </summary>
         /// <typeparam name="T">The function return type.</typeparam>
-        /// <param name="a">Action to execute.</param>s
+        /// <typeparam name="RetryException">The retry exception.</typeparam>
+        /// <param name="a">Action to execute.</param>
         /// <param name="function">The function to test for stabilization.</param>
-        public static void ActAndWaitForChange<T>(Action a, Func<T> function)
+        public static void ActAndWaitForChange<T, RetryException>(Action a, Func<T> function)
+            where RetryException : Exception
         {
             T before = function();
             a();
@@ -93,7 +95,7 @@ namespace Trumpf.Coparoo.Desktop.Waiting
                 {
                     return Different(before, function());
                 }
-                catch (SmartBear.TestLeft.TestObjects.InvocationException)
+                catch (RetryException)
                 {
                     return false;
                 }
