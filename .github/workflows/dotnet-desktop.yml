@@ -1,0 +1,71 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+    runs-on: windows-latest
+    env:
+      Solution_Name: Trumpf.Coparoo.Desktop.sln
+      Test_Project_Path: Trumpf.Coparoo.Desktop.Tests\Trumpf.Coparoo.Desktop.Tests.csproj
+      Package_Output_Dir: ${{ github.workspace }}\artifacts
+      Test_Results_Dir: ${{ github.workspace }}\test-results
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    # Add MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
+
+    # Build the solution
+    - name: Build
+      run: dotnet build ${{ env.Solution_Name }} --configuration ${{ matrix.configuration }}
+
+    # Execute unit tests (continue on error to allow test results upload if failed)
+    - name: Execute Unit Tests
+      if: matrix.configuration == 'Debug'
+      continue-on-error: true
+      run: |
+        mkdir -p ${{ env.Test_Results_Dir }}
+        dotnet test ${{ env.Test_Project_Path }} --configuration ${{ matrix.configuration }} --verbosity normal --logger "trx;LogFileName=${{ env.Test_Results_Dir }}\test_result_${{ matrix.configuration }}.trx"
+        echo "Listing files in test results directory:"
+        dir ${{ env.Test_Results_Dir }}
+
+    # Upload test results if the previous test step failed
+    - name: Upload Test Results on Failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: ${{ env.Test_Results_Dir }}\test_result_${{ matrix.configuration }}.trx
+
+    # Generate NuGet package in Release configuration only if all steps succeed
+    - name: Generate NuGet Package
+      if: matrix.configuration == 'Release' && success()
+      run: |
+        dotnet pack ${{ env.Solution_Name }} --configuration Release --no-build --output ${{ env.Package_Output_Dir }}
+
+    # Upload the NuGet package as an artifact
+    - name: Upload NuGet Package
+      if: matrix.configuration == 'Release' && success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-package
+        path: ${{ env.Package_Output_Dir }}\*.nupkg
