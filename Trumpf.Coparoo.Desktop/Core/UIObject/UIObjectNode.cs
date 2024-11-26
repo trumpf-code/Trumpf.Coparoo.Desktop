@@ -220,7 +220,7 @@ namespace Trumpf.Coparoo.Desktop.Core
             {
                 if (matches == null)
                 {
-                    Wait.For(() => (matches = parentHint.FindAll<IControl>(SearchPattern, PageObjectSearchDepth)).Any());
+                    WaitHelper.For(() => (matches = parentHint.FindAll<IControl>(SearchPattern, PageObjectSearchDepth)).Any());
                 }
 
                 return matches;

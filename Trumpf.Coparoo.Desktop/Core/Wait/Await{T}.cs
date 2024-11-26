@@ -75,7 +75,7 @@ namespace Trumpf.Coparoo.Desktop.Core.Waiting
         /// <returns>Whether the page object is visible on screen.</returns>
         public bool TryWaitFor(Predicate<T> expectation)
         {
-            return TryWait.For(() => expectation(Value), waitTimeout());
+            return WaitHelper.For(() => expectation(Value), waitTimeout());
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Trumpf.Coparoo.Desktop.Core.Waiting
         /// <returns>Whether the page object is visible on screen.</returns>
         public bool TryWaitFor(Predicate<T> expectation, TimeSpan timeout)
         {
-            return TryWait.For(() => expectation(Value), timeout);
+            return WaitHelper.For(() => expectation(Value), timeout);
         }
         #endregion
 
