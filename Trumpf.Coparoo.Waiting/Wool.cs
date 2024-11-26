@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Trumpf.Coparoo.Desktop.Waiting
+namespace Trumpf.Coparoo.Waiting
 {
     using System;
+    using Trumpf.Coparoo.Waiting.Interfaces;
 
     /// <summary>
     /// Boolean equipped with throwing and non-throwing waiting methods.

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Trumpf.Coparoo.Desktop.Tests.DialogWaitFor
+namespace Trumpf.Coparoo.Waiting.Tests.Wait
 {
     using System;
     using System.Linq;
@@ -162,7 +162,7 @@ namespace Trumpf.Coparoo.Desktop.Tests.DialogWaitFor
         public void IfTheConditionIsFlipsBad_ThenTimeout()
         {
             bool b = false;
-            Assert.Throws<DialogWaitForTimeoutException>(() => DialogWait.For(() => (b = !b), "Empty", @long, medium, TimeSpan.FromMilliseconds(500)));
+            Assert.Throws<DialogWaitForTimeoutException>(() => DialogWait.For(() => b = !b, "Empty", @long, medium, TimeSpan.FromMilliseconds(500)));
         }
 
         /// <summary>

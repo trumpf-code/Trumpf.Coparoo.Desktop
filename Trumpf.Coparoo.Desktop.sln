@@ -43,9 +43,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trumpf.Coparoo.Desktop.Tests.LoadFrom", "Trumpf.Coparoo.Desktop.Tests.LoadFrom\Trumpf.Coparoo.Desktop.Tests.LoadFrom.csproj", "{C01E0131-5C05-4BA2-A75D-C4366A5B3D12}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trumpf.Coparoo.DialogWaitFor", "Trumpf.Coparoo.DialogWaitFor\Trumpf.Coparoo.DialogWaitFor.csproj", "{FD9F488D-5630-487F-A5F1-7D629759A14A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trumpf.Coparoo.Waiting", "Trumpf.Coparoo.Waiting\Trumpf.Coparoo.Waiting.csproj", "{FD9F488D-5630-487F-A5F1-7D629759A14A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trumpf.Coparoo.DialogWaitFor.Tests", "Trumpf.Coparoo.DialogWaitFor.Tests\Trumpf.Coparoo.DialogWaitFor.Tests.csproj", "{63FBC944-8FD4-4182-9DCA-92ED3A849BF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trumpf.Coparoo.Waiting.Tests", "Trumpf.Coparoo.Waiting.Tests\Trumpf.Coparoo.Waiting.Tests.csproj", "{63FBC944-8FD4-4182-9DCA-92ED3A849BF9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DialogWait", "DialogWait", "{F30CBE63-BA0A-4D76-988B-1A759DA2E60F}"
 EndProject

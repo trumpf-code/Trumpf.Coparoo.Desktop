@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Trumpf.Coparoo.Desktop.Exceptions
+namespace Trumpf.Coparoo.Waiting.Exceptions
 {
     using System;
 
     /// <summary>
-    /// Dialog wait for timeout exception.
+    /// Dialog wait for aborted exception.
     /// </summary>
-    public class DialogWaitForTimeoutException : Exception
+    internal class DialogWaitForAbortedException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DialogWaitForTimeoutException"/> class.
         /// </summary>
-        public DialogWaitForTimeoutException() : base()
+        public DialogWaitForAbortedException() : base()
         {
         }
 
@@ -32,8 +32,7 @@ namespace Trumpf.Coparoo.Desktop.Exceptions
         /// Initializes a new instance of the <see cref="DialogWaitForTimeoutException"/> class.
         /// </summary>
         /// <param name="expectedCondition">The message that describes the error.</param>
-        /// <param name="timeout">The timeout.</param>
-        public DialogWaitForTimeoutException(string expectedCondition, TimeSpan timeout) : base("Timeout of " + timeout.TotalSeconds.ToString("0.00") + " seconds exceeded when waiting for '" + expectedCondition + "'")
+        public DialogWaitForAbortedException(string expectedCondition) : base("User aborted waiting for condition " + expectedCondition)
         {
         }
 
@@ -42,7 +41,7 @@ namespace Trumpf.Coparoo.Desktop.Exceptions
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="inner">The inner exception.</param>
-        public DialogWaitForTimeoutException(string message, System.Exception inner) : base(message, inner)
+        public DialogWaitForAbortedException(string message, System.Exception inner) : base(message, inner)
         {
         }
     }
