@@ -21,6 +21,7 @@ namespace VDI.Tests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Trumpf.Coparoo.Desktop.Waiting;
     using Trumpf.Coparoo.Desktop.Web;
+    using Trumpf.Coparoo.Waiting;
     using VDI.Coparoo.Desktop;
 
     [TestClass]
@@ -37,7 +38,7 @@ namespace VDI.Tests
             vdi.On<Seminare>().Volltextsuche.ScrollTo();
             vdi.On<Seminare>().Volltextsuche.Content = "praxis qualitätssicherung";
             vdi.On<Seminare>().SucheAnzeigen.Click();
-            DialogWait.For(() => vdi.On<Seminare>().SeminarZeilen.Count(), c => c == 3, "3 seminars in list", TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(1), true, null);
+            ConditionDialog.For(() => vdi.On<Seminare>().SeminarZeilen.Count(), c => c == 3, "3 seminars in list", TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(1), true, null);
         }
 
         [TestMethod]
@@ -45,7 +46,7 @@ namespace VDI.Tests
         {
             VDIWebPage vdi = new VDIWebPage();
             vdi.Goto<Seminare>().SearchFor("praxis qualitätssicherung");
-            DialogWait.For(() => vdi.On<Seminare>().SeminarZeilen.Count(), c => c == 3, "3 seminars in list");
+            ConditionDialog.For(() => vdi.On<Seminare>().SeminarZeilen.Count(), c => c == 3, "3 seminars in list");
         }
 
         [TestMethod]
@@ -53,7 +54,7 @@ namespace VDI.Tests
         {
             IVDIWebPage vdi = WebPageObject.Resolve<IVDIWebPage>();
             vdi.Goto<ISeminare>().SearchFor("praxis qualitätssicherung");
-            DialogWait.For(() => vdi.On<ISeminare>().SeminarZeilen.Count(), c => c == 3, "3 seminars in list");
+            ConditionDialog.For(() => vdi.On<ISeminare>().SeminarZeilen.Count(), c => c == 3, "3 seminars in list");
             vdi.WritePdfTree();
         }
 

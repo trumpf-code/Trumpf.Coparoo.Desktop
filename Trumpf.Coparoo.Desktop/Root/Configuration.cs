@@ -144,7 +144,7 @@ namespace Trumpf.Coparoo.Desktop
         }
 
         /// <summary>
-        /// Gets or set the dialog dialogWaiter.
+        /// Gets or set the dialog waiter.
         /// </summary>
         public IDialogWaiter DialogWaiter { get; set; } = null;
     }

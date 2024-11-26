@@ -20,6 +20,6 @@ namespace VDI.Coparoo.Desktop
     public class DialogWaiter : IDialogWaiter
     {
         public void WaitFor<T>(Func<T> function, Predicate<T> condition, string expectationText, TimeSpan pollingPeriod, TimeSpan negativeTimeout, TimeSpan positiveTimeout)
-            => DialogWait.For<T>(function, condition, expectationText, pollingPeriod, negativeTimeout, positiveTimeout);
+            => Trumpf.Coparoo.Waiting.ConditionDialog.For<T>(function, condition, expectationText, pollingPeriod, negativeTimeout, positiveTimeout);
     }
 }

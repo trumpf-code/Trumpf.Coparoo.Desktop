@@ -26,9 +26,9 @@ namespace Trumpf.Coparoo.Waiting
     using Exceptions;
 
     /// <summary>
-    /// Dialog wait class.
+    /// Condition dialog class.
     /// </summary>
-    public class DialogWait
+    public class ConditionDialog
     {
         private readonly object m = new object();
         private State state;
@@ -43,9 +43,9 @@ namespace Trumpf.Coparoo.Waiting
         private static readonly TimeSpan positiveWaitTimeWithAction = TimeSpan.FromSeconds(2);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DialogWait"/> class.
+        /// Initializes a new instance of the <see cref="ConditionDialog"/> class.
         /// </summary>
-        private DialogWait()
+        private ConditionDialog()
         {
         }
 
@@ -126,7 +126,7 @@ namespace Trumpf.Coparoo.Waiting
         /// <param name="expectationText">Text that explains the function's expectation.</param>
         public static void For<T>(Func<T> function, Predicate<T> condition, string expectationText)
         {
-            For<T>(function, condition, expectationText, negativeWaitTime);
+            For(function, condition, expectationText, negativeWaitTime);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace Trumpf.Coparoo.Waiting
         /// <param name="actionText">The action text.</param>
         public static void For<T>(Func<T> function, Predicate<T> condition, string expectationText, TimeSpan negativeTimeout, TimeSpan positiveTimeout, TimeSpan pollingPeriod, bool clickThrough, string actionText)
         {
-            new DialogWait().Forr(function, condition, expectationText, negativeTimeout, positiveTimeout, pollingPeriod, clickThrough, actionText);
+            new ConditionDialog().Forr(function, condition, expectationText, negativeTimeout, positiveTimeout, pollingPeriod, clickThrough, actionText);
         }
 
         [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
@@ -278,13 +278,13 @@ namespace Trumpf.Coparoo.Waiting
         [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
         private static extern int SetWindowLong(IntPtr wnd, GWL index, int newLong);
 
-        [DllImportAttribute("user32.dll")]
+        [DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr wnd, int msg, int param1, int param2);
 
         [DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hwnd, int wmsg, bool wparam, int lparam);
 
-        [DllImportAttribute("user32.dll")]
+        [DllImport("user32.dll")]
         private static extern bool ReleaseCapture();
 
         /// <summary>
@@ -546,10 +546,10 @@ namespace Trumpf.Coparoo.Waiting
                     return;
 
                 case State.bad_timedout:
-                    throw new DialogWaitForTimeoutException(expectationText, negativeTimeout);
+                    throw new WaitForTimeoutException(expectationText, negativeTimeout);
 
                 case State.bad_userexit:
-                    throw new DialogWaitForAbortedException(expectationText);
+                    throw new WaitForAbortedException(expectationText);
 
                 default: throw new InvalidOperationException(state.ToString());
             }

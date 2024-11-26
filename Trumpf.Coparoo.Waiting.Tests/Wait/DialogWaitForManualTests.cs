@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #if DEBUG
-namespace Trumpf.Coparoo.Desktop.Tests.DialogWaitFor
+namespace Trumpf.Coparoo.Desktop.Tests.ConditionDialogFor
 {
     using System;
     using System.Linq;
@@ -24,35 +24,35 @@ namespace Trumpf.Coparoo.Desktop.Tests.DialogWaitFor
     /// Dialog wait for tests
     /// </summary>
     [TestFixture]
-    public class DialogWaitForManualTests
+    public class ConditionDialogForManualTests
     {
         /// <summary>
         /// Wait with action text.
         /// </summary>
         [Test]
-        public void DialogWaitForTenActions()
-            => DialogWait.ForAction(actionText(10), expectationText(10));
+        public void ConditionDialogForTenActions()
+            => ConditionDialog.ForAction(actionText(10), expectationText(10));
 
         /// <summary>
         /// Wait with action text.
         /// </summary>
         [Test]
-        public void DialogWaitForThreeActions()
-            => DialogWait.ForAction(actionText(3), expectationText(3));
+        public void ConditionDialogForThreeActions()
+            => ConditionDialog.ForAction(actionText(3), expectationText(3));
 
         /// <summary>
         /// Wait with action text.
         /// </summary>
         [Test]
-        public void DialogWaitForTwoActions()
-            => DialogWait.ForAction(actionText(2), expectationText(2));
+        public void ConditionDialogForTwoActions()
+            => ConditionDialog.ForAction(actionText(2), expectationText(2));
 
         /// <summary>
         /// Wait with action text.
         /// </summary>
         [Test]
-        public void DialogWaitForOneAction()
-            => DialogWait.ForAction(actionText(1), expectationText(1));
+        public void ConditionDialogForOneAction()
+            => ConditionDialog.ForAction(actionText(1), expectationText(1));
 
         private string actionText(int i)
             => text("action", i);

@@ -10,7 +10,7 @@
     <Optimize>false</Optimize>
 
     <!-- nupkg information -->
-    <PackageId>Trumpf.Coparoo.DialogWaitFor</PackageId>
+    <PackageId>Trumpf.Coparoo.ConditionDialogFor</PackageId>
     <Title>Trumpf.Coparoo.Desktop Library for .NET</Title>
     <Authors>Alexander Kaiser</Authors>
     <Company>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Company>
