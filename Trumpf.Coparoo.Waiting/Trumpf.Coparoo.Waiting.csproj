@@ -10,16 +10,11 @@
     <Optimize>false</Optimize>
 
     <!-- nupkg information -->
-    <PackageId>Trumpf.Coparoo.ConditionDialogFor</PackageId>
-    <Title>Trumpf.Coparoo.Desktop Library for .NET</Title>
+    <Title>Trumpf.Coparoo.Waiting – Visual Waiting Dialogs for Automated Tests</Title>
     <Authors>Alexander Kaiser</Authors>
     <Company>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Company>
-    <Product>Trumpf Coparoo Desktop</Product>
-    <Description>Trumpf.Coparoo.Desktop is a .NET library for C# that helps you write fast, maintainable, robust and fluent UI tests for web and desktop apps based on the control/page/root-object (Coparoo) pattern. It is built on top of SmartBear's commercial TestLeft® tool; more details on https://smartbear.de/product/testleft.</Description>
-    <Summary>
-      Trumpf.Coparoo.Desktop is a .NET library for C# that helps you write fast, maintainable, robust and fluent UI tests for web and desktop apps based on the control/page/root-object (Coparoo) pattern.
-      It is built on top of SmartBear's commercial TestLeft® tool; more details on https://smartbear.de/product/testleft.
-    </Summary>
+    <Product>Trumpf Coparoo Waiting</Product>
+    <Description>Trumpf.Coparoo.Waiting is a .NET library for C# that provides intuitive waiting methods for automated tests. It allows testers to poll conditions while displaying a visual waiting dialog that shows the current state of the condition. The dialog turns red for false conditions, green when the condition is true, and grey to indicate when manual intervention is required. This feature simplifies test analysis, enhances understanding through video recordings, and supports semi-automated tests by providing user instructions. It is particularly useful for automated UI tests, improving debugging efficiency and ensuring clarity during test execution.</Description>
     <Copyright>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -44,7 +39,7 @@
 
   <!-- reference information -->
   <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
     <None Include="$(SolutionDir)Resources\logo.png" Pack="true" PackagePath="" />
     <None Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
