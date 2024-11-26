@@ -22,9 +22,9 @@ namespace Trumpf.Coparoo.Waiting
     /// </summary>
     public class Wool
     {
-        private IAwait<bool> waiter;
-        private Func<bool> snap;
-        private Action unsnap;
+        private readonly IAwait<bool> waiter;
+        private readonly Func<bool> snap;
+        private readonly Action unsnap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Wool"/> class.
@@ -150,7 +150,7 @@ namespace Trumpf.Coparoo.Waiting
         /// <returns>The function result.</returns>
         private bool ActSnapped(Func<bool> function)
         {
-            var result = snap() ? function() : true;
+            var result = !snap() || function();
             unsnap();
             return result;
         }

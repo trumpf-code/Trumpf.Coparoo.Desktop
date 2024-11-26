@@ -30,7 +30,7 @@ namespace Trumpf.Coparoo.Waiting
     /// </summary>
     public class DialogWait
     {
-        private object m = new object();
+        private readonly object m = new object();
         private State state;
         private TimeSpan gto;
         private TimeSpan positiveTimeout;
@@ -588,10 +588,10 @@ namespace Trumpf.Coparoo.Waiting
             var stopwatch = new Stopwatch();
 
             bool first = true;
-            T lastValue = default(T);
-            T value = default(T);
-            bool lastTruth = default(bool);
-            bool truth = default(bool);
+            T lastValue = default;
+            T value = default;
+            bool lastTruth = default;
+            bool truth = default;
             while (condition != null && !c.IsCancellationRequested)
             {
                 stopwatch.Restart();
@@ -625,18 +625,18 @@ namespace Trumpf.Coparoo.Waiting
         private class DialogView
         {
             // create and add dialog components
-            private Label expectedHeaderLabel;
-            private Label expectedTextLabel;
-            private Label actionHeaderLabel;
-            private Label actionTextLabel;
-            private Label valueLabel;
-            private Label autoActionGoodLabel;
-            private Label autoActionBadLabel;
-            private Button positiveButton;
-            private Button negativeButton;
-            private Form dialog;
-            private bool clickThrough;
-            private bool showCurrentValue;
+            private readonly Label expectedHeaderLabel;
+            private readonly Label expectedTextLabel;
+            private readonly Label actionHeaderLabel;
+            private readonly Label actionTextLabel;
+            private readonly Label valueLabel;
+            private readonly Label autoActionGoodLabel;
+            private readonly Label autoActionBadLabel;
+            private readonly Button positiveButton;
+            private readonly Button negativeButton;
+            private readonly Form dialog;
+            private readonly bool clickThrough;
+            private readonly bool showCurrentValue;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DialogView"/> class.
