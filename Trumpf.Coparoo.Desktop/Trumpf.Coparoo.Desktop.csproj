@@ -32,10 +32,13 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>TRACE;DEBUG</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('..\..\Key.snk')">
+    <DefineConstants>KEY_FOUND</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
 		<SignAssembly Condition="Exists('..\..\Key.snk')">true</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\..\Key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
