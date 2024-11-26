@@ -40,7 +40,7 @@
   <!-- reference information -->
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="$(SolutionDir)Resources\logo.png" Pack="true" PackagePath="" />
+    <None Include=".\Resources\logo.png" Pack="true" PackagePath="" />
     <None Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 

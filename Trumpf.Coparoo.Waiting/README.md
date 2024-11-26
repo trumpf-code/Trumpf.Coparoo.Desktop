@@ -1,5 +1,7 @@
 # Trumpf.Coparoo.Waiting
 
+![logo]
+
 Trumpf.Coparoo.Waiting is a .NET library for C# that simplifies the process of waiting for conditions in automated tests. It provides a visual dialog to indicate the current state of the condition being evaluated, making it easier for testers to understand what is happening during test execution. The dialog will display in different colors to indicate whether the condition is true, false, or requires manual intervention.
 
 ## Features
@@ -115,3 +117,5 @@ Feel free to submit pull requests or report issues via the GitHub repository. Co
 ## License
 
 This library is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for more information.
+
+[logo]: ./Resources/logo.png "coparoo waiting logo"
