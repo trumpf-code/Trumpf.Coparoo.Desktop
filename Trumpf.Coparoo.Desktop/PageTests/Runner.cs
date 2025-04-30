@@ -83,7 +83,6 @@ namespace Trumpf.Coparoo.Desktop.PageTests
 
             foreach (Type classWithTests in source.TestClasses())
             {
-
                 // create and initialize page test class
                 IPageObjectTestsInternal instance;
                 IRootObject root = GetRoot(source);
@@ -98,7 +97,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
 
                     instance = (IPageObjectTestsInternal)configuration.resolver.Resolve(classWithTests);
                 }
-                catch (Stashbox.Exceptions.ResolutionFailedException exception)
+                catch (CompactClassResolver.ResolutionFailedException exception)
                 {
                     throw new TypeResolutionFailedException(exception, $"Configure the resolver via '{nameof(Configuration.DependencyRegistrator)}' in class '{root.GetType().FullName}'.");
                 }

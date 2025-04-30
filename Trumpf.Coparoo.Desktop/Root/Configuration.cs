@@ -16,7 +16,7 @@ namespace Trumpf.Coparoo.Desktop
 {
     using System;
 
-    using Stashbox;
+    using CompactClassResolver;
     using Trumpf.Coparoo.Desktop.Waiting;
 
     /// <summary>
@@ -36,7 +36,7 @@ namespace Trumpf.Coparoo.Desktop
         private Action<string> logAction = null;
         private int nodeSearchDepth = 20;
         private int controlSearchDepth = 20;
-        internal StashboxContainer resolver = new StashboxContainer();
+        internal CompactClassResolverContainer resolver = new CompactClassResolverContainer();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Configuration"/> class.

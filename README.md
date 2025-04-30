@@ -70,4 +70,3 @@ Coparoo uses the [Stashbox](https://github.com/z4kn4fein/stashbox) dependency in
 
 [logo]: ./Resources/logo.png "coparoo dektop logo"
 [appVeyorBuildStatus]: https://ci.appveyor.com/api/projects/status/github/trumpf-code/Trumpf.Coparoo.Desktop "Build Status (AppVeyor)"
-
