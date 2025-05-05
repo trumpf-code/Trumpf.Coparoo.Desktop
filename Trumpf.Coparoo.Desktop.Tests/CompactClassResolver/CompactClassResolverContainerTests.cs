@@ -43,6 +43,20 @@ namespace CompactClassResolver.Tests
         }
 
         [Test]
+        public void TestRegisterInterfaceInstance()
+        {
+            var container = new CompactClassResolverContainer();
+            var instance = new InterfaceImpl();
+            container.RegisterInstance<IInterface>(instance);
+
+            var resolved = container.Resolve<IInterface>();
+
+            Assert.IsNotNull(resolved, "Resolved instance should not be null.");
+            Assert.IsInstanceOf(typeof(InterfaceImpl), resolved, "Resolved instance should be of type InterfaceImpl.");
+            Assert.AreSame(instance, resolved, "Resolved instance should be the same as the registered singleton.");
+        }
+
+        [Test]
         public void TestConstructorInjection()
         {
             var container = new CompactClassResolverContainer();
