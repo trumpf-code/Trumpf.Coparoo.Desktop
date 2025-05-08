@@ -525,7 +525,7 @@ namespace Trumpf.Coparoo.Waiting
 
             // spawn
             var c = new CancellationTokenSource();
-            Task ui = new Task(() => uic.UI(() => OnDialogLoad(expectationText, actionText), OnBadClick, OnGoodClick));
+            Task ui = new Task(() => uic.UI(() => OnDialogLoad(expectationText, actionText), OnBadClick, OnGoodClick), c.Token);
             Task ti = new Task(() => Timer(c.Token));
             Task po = new Task(() => Evaluator(c.Token, function, condition, pollingPeriod));
 
@@ -572,7 +572,18 @@ namespace Trumpf.Coparoo.Waiting
                     break;
                 }
 
-                Thread.Sleep(timerPeriod);
+                Sleep(timerPeriod, c);
+            }
+        }
+
+        private static void Sleep(TimeSpan timerPeriod, CancellationToken c)
+        {
+            try
+            {
+                Task.Delay(timerPeriod, c).Wait();
+            }
+            catch (Exception)
+            {
             }
         }
 
@@ -614,7 +625,8 @@ namespace Trumpf.Coparoo.Waiting
                 }
 
                 var remaining = pollingPeriod - stopwatch.Elapsed;
-                Thread.Sleep(remaining >= TimeSpan.Zero && !c.IsCancellationRequested ? remaining : TimeSpan.Zero);
+                Sleep(remaining, c);
+
                 first = false;
             }
         }
@@ -820,7 +832,7 @@ namespace Trumpf.Coparoo.Waiting
             {
                 if (condition)
                 {
-                    if (dialog.InvokeRequired)
+                    if (dialog.InvokeRequired && dialog.IsHandleCreated && !dialog.IsDisposed)
                     {
                         dialog.BeginInvoke((MethodInvoker)(() => a()));
                     }
@@ -870,7 +882,10 @@ namespace Trumpf.Coparoo.Waiting
             /// </summary>
             public void Close()
             {
-                Invoke(() => dialog.Close());
+                Invoke(() => {
+                    dialog.Close();
+                    dialog.Dispose();
+                });
             }
 
             /// <summary>
