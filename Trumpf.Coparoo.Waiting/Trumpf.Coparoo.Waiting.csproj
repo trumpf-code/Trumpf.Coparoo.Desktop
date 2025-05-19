@@ -22,7 +22,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
     <PackageIcon>logo.png</PackageIcon>
-    <Version>1.3.0</Version>
+    <Version>1.3.1-Async.1</Version>
     <RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -33,8 +33,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <SignAssembly Condition="Exists('..\..\Keys\Key.snk')">true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Keys\Key.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly Condition="Exists('..\..\..\Keys\Key.snk')">true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\Keys\Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <!-- reference information -->
@@ -46,7 +46,7 @@
 
   <!-- signing -->
   <Target Name="PostBuildTarget" AfterTargets="AfterBuild">
-    <Exec Condition="Exists('..\..\Keys\Key.snk')" Command="echo KEY FOUND" />
-    <Exec Condition="!Exists('..\..\Keys\Key.snk')" Command="echo NO KEY FOUND" />
+    <Exec Condition="Exists('..\..\..\Keys\Key.snk')" Command="echo KEY FOUND" />
+    <Exec Condition="!Exists('..\..\..\Keys\Key.snk')" Command="echo NO KEY FOUND" />
   </Target>
 </Project>

@@ -517,41 +517,58 @@ namespace Trumpf.Coparoo.Waiting
         /// <param name="actionText">The action text.</param>
         private void Forr<T>(Func<T> function, Predicate<T> condition, string expectationText, TimeSpan negativeTimeout, TimeSpan positiveTimeout, TimeSpan pollingPeriod, bool clickThrough, string actionText)
         {
-            // init
-            state = State.init;
-            this.positiveTimeout = positiveTimeout;
-            this.negativeTimeout = negativeTimeout;
-            uic = new DialogView(negativeTimeout != TimeSpan.MaxValue, positiveTimeout != TimeSpan.MaxValue && positiveTimeout != TimeSpan.Zero, clickThrough, function != null, actionText, expectationText.Split('\n').Count());
-
-            // spawn
-            var c = new CancellationTokenSource();
-            Task ui = new Task(() => uic.UI(() => OnDialogLoad(expectationText, actionText), OnBadClick, OnGoodClick), c.Token);
-            Task ti = new Task(() => Timer(c.Token));
-            Task po = new Task(() => Evaluator(c.Token, function, condition, pollingPeriod));
-
-            // join
-            ui.Start();
-            ti.Start();
-            po.Start();
-            ui.Wait();
-
-            c.Cancel();
-            ti.Wait();
-            po.Wait();
-
-            switch (state)
+            try
             {
-                case State.good_userexit:
-                case State.good_timedout:
-                    return;
+                Task.Run(() =>
+                {
+                    // init
+                    state = State.init;
+                    this.positiveTimeout = positiveTimeout;
+                    this.negativeTimeout = negativeTimeout;
+                    uic = new DialogView(negativeTimeout != TimeSpan.MaxValue, positiveTimeout != TimeSpan.MaxValue && positiveTimeout != TimeSpan.Zero, clickThrough, function != null, actionText, expectationText.Split('\n').Count());
 
-                case State.bad_timedout:
-                    throw new WaitForTimeoutException(expectationText, negativeTimeout);
+                    // spawn
+                    var c = new CancellationTokenSource();
+                    Task ui = new Task(() => uic.UI(() => OnDialogLoad(expectationText, actionText), OnBadClick, OnGoodClick), c.Token);
+                    Task ti = new Task(() => Timer(c.Token));
+                    Task po = new Task(() => Evaluator(c.Token, function, condition, pollingPeriod));
 
-                case State.bad_userexit:
-                    throw new WaitForAbortedException(expectationText);
+                    // join
+                    ui.Start();
+                    ti.Start();
+                    po.Start();
+                    ui.Wait();
 
-                default: throw new InvalidOperationException(state.ToString());
+                    c.Cancel();
+                    ti.Wait();
+                    po.Wait();
+
+                    switch (state)
+                    {
+                        case State.good_userexit:
+                        case State.good_timedout:
+                            return;
+
+                        case State.bad_timedout:
+                            throw new WaitForTimeoutException(expectationText, negativeTimeout);
+
+                        case State.bad_userexit:
+                            throw new WaitForAbortedException(expectationText);
+
+                        default: throw new InvalidOperationException(state.ToString());
+                    }
+                }).Wait();
+            }
+            catch (AggregateException e)
+            {
+                if (e.InnerException != null)
+                {
+                    throw e.InnerException;
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
