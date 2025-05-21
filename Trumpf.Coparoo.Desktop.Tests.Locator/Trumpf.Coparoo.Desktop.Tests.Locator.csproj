@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0-windows</TargetFramework>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Trumpf.Coparoo.Desktop.DemoApp.Interf\Trumpf.Coparoo.Desktop.DemoApp.Interf.csproj" />

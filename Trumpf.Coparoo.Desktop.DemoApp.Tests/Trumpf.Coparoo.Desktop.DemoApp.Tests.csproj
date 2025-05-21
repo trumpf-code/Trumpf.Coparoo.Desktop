@@ -3,6 +3,7 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<SignAssembly Condition="Exists('..\Key.snk')">true</SignAssembly>
 		<AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
