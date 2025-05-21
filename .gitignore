@@ -296,3 +296,19 @@ __pycache__/
 
 # User added stuff
 /NuGet.Config
+
+# Schlüsseldateien
+*.snk
+*.pfx
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+
+# SSH-Schlüssel
+*.pub
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
