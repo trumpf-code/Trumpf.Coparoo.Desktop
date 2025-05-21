@@ -1,52 +1,53 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <!-- project information -->
-    <TargetFrameworks>net451;net8.0-windows</TargetFrameworks>
-    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
-    <UseWindowsForms>true</UseWindowsForms>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <DebugType>embedded</DebugType>
-    <Optimize>false</Optimize>
+	<PropertyGroup>
+		<!-- project information -->
+		<TargetFrameworks>net451;net8.0-windows</TargetFrameworks>
+		<DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+		<UseWindowsForms>true</UseWindowsForms>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<DebugType>embedded</DebugType>
+		<Optimize>false</Optimize>
 
-    <!-- nupkg information -->
-    <Title>Trumpf.Coparoo.Waiting – Visual Waiting Dialogs for Automated Tests</Title>
-    <Authors>Alexander Kaiser</Authors>
-    <Company>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Company>
-    <Product>Trumpf Coparoo Waiting</Product>
-    <Description>Trumpf.Coparoo.Waiting is a .NET library for C# that provides intuitive waiting methods for automated tests. It allows testers to poll conditions while displaying a visual waiting dialog that shows the current state of the condition. The dialog turns red for false conditions, green when the condition is true, and grey to indicate when manual intervention is required. This feature simplifies test analysis, enhances understanding through video recordings, and supports semi-automated tests by providing user instructions. It is particularly useful for automated UI tests, improving debugging efficiency and ensuring clarity during test execution.</Description>
-    <Copyright>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>testleft, automation, PageObject, test, ui</PackageTags>
-    <NeutralLanguage>en</NeutralLanguage>
-    <PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
-    <PackageIcon>logo.png</PackageIcon>
-    <Version>1.3.1</Version>
-    <RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-  </PropertyGroup>
+		<!-- nupkg information -->
+		<Title>Trumpf.Coparoo.Waiting – Visual Waiting Dialogs for Automated Tests</Title>
+		<Authors>Alexander Kaiser</Authors>
+		<Company>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Company>
+		<Product>Trumpf Coparoo Waiting</Product>
+		<Description>Trumpf.Coparoo.Waiting is a .NET library for C# that provides intuitive waiting methods for automated tests. It allows testers to poll conditions while displaying a visual waiting dialog that shows the current state of the condition. The dialog turns red for false conditions, green when the condition is true, and grey to indicate when manual intervention is required. This feature simplifies test analysis, enhances understanding through video recordings, and supports semi-automated tests by providing user instructions. It is particularly useful for automated UI tests, improving debugging efficiency and ensuring clarity during test execution.</Description>
+		<Copyright>TRUMPF Werkzeugmaschinen GmbH + Co. KG</Copyright>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>testleft, automation, PageObject, test, ui</PackageTags>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageProjectUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</PackageProjectUrl>
+		<PackageIcon>logo.png</PackageIcon>
+		<Version>1.3.1</Version>
+		<RepositoryUrl>https://github.com/trumpf-code/trumpf.coparoo.desktop</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <SignAssembly Condition="Exists('..\..\..\Keys\Key.snk')">true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\Keys\Key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>TRACE;DEBUG</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="Exists('..\..\Key.snk')">
+		<DefineConstants>KEY_FOUND</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup>
+		<SignAssembly Condition="Exists('..\..\Key.snk')">true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\Key.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
 
-  <!-- reference information -->
-  <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include=".\Resources\logo.png" Pack="true" PackagePath="" />
-    <None Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath="" />
-  </ItemGroup>
+	<!-- reference information -->
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\Resources\logo.png" Pack="true" PackagePath="" />
+		<None Include="..\LICENSE" Pack="true" PackagePath="" />
+	</ItemGroup>
 
-  <!-- signing -->
-  <Target Name="PostBuildTarget" AfterTargets="AfterBuild">
-    <Exec Condition="Exists('..\..\..\Keys\Key.snk')" Command="echo KEY FOUND" />
-    <Exec Condition="!Exists('..\..\..\Keys\Key.snk')" Command="echo NO KEY FOUND" />
-  </Target>
+	<!-- log whether key exists -->
+	<Target Name="PostBuildTarget" AfterTargets="AfterBuild">
+		<Exec Condition="Exists('..\..\Key.snk')" Command="echo KEY FOUND" />
+		<Exec Condition="!Exists('..\..\Key.snk')" Command="echo NO KEY FOUND" />
+	</Target>
 </Project>
