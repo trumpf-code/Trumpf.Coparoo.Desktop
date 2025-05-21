@@ -1,0 +1,24 @@
+digraph graphname 
+{
+size="1,1";
+rankdir = LR;
+splines = line;
+Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_A[ color=black, margin=0 shape=box, style=filled, fillcolor=white, fontsize=20, fontname=Arial label = "PAGE OBJECT
+
+A"];
+Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_B[ color=black, margin=0 shape=box, style=filled, fillcolor=white, fontsize=20, fontname=Arial label = "PAGE OBJECT
+
+B"];
+Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_G[ color=black, margin=0 shape=box, style=filled, fillcolor=white, fontsize=20, fontname=Arial label = "PAGE OBJECT
+
+G"];
+Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_B_[ color=black, margin=0 shape=box, style=filled, fillcolor=white, fontsize=20, fontname=Arial label = "PAGE OBJECT
+
+B2"];
+Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_B -> Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_G[label=""];
+Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_A -> Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_B[label=""];
+Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_A -> Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_G[label=""];
+Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_A -> Trumpf_Coparoo_Desktop_Tests_Framework_PageObjectLocatorStatic_B_[label=""];
+{rank=same; }
+{rank=same; }
+}
