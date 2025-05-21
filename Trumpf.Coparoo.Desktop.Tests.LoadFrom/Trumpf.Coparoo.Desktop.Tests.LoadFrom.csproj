@@ -3,8 +3,8 @@
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup>
-		<SignAssembly Condition="Exists('..\..\Key.snk')">true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\Key.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly Condition="Exists('..\Key.snk')">true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Trumpf.Coparoo.Desktop\Trumpf.Coparoo.Desktop.csproj" />

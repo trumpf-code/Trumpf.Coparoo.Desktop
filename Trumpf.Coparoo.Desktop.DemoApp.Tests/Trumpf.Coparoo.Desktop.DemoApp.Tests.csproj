@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<SignAssembly Condition="Exists('..\..\Key.snk')">true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\Key.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly Condition="Exists('..\Key.snk')">true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
@@ -13,7 +13,7 @@
 	</ItemGroup>
 	<!-- signing -->
 	<Target Name="PostBuildTarget" AfterTargets="AfterBuild">
-		<Exec Condition="Exists('..\..\Key.snk')" Command="echo KEY FOUND" />
-		<Exec Condition="!Exists('..\..\Key.snk')" Command="echo NO KEY FOUND" />
+		<Exec Condition="Exists('..\Key.snk')" Command="echo KEY FOUND" />
+		<Exec Condition="!Exists('..\Key.snk')" Command="echo NO KEY FOUND" />
 	</Target>
 </Project>

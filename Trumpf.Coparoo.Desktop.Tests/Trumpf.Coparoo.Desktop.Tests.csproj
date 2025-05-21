@@ -3,8 +3,8 @@
 		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup>
-		<SignAssembly Condition="Exists('..\..\Key.snk')">true</SignAssembly>
-		<AssemblyOriginatorKeyFile>..\..\Key.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly Condition="Exists('..\Key.snk')">true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Trumpf.Coparoo.Desktop\Trumpf.Coparoo.Desktop.csproj" />
@@ -14,7 +14,7 @@
 	</ItemGroup>
 	<!-- signing -->
 	<Target Name="PostBuildTarget" AfterTargets="AfterBuild">
-		<Exec Condition="Exists('..\..\Key.snk')" Command="echo KEY FOUND" />
-		<Exec Condition="!Exists('..\..\Key.snk')" Command="echo NO KEY FOUND" />
+		<Exec Condition="Exists('..\Key.snk')" Command="echo KEY FOUND" />
+		<Exec Condition="!Exists('..\Key.snk')" Command="echo NO KEY FOUND" />
 	</Target>
 </Project>
