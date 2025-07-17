@@ -31,6 +31,6 @@ namespace Trumpf.Coparoo.Desktop.Waiting
         /// <param name="negativeTimeout">The negative timeout.</param>
         /// <param name="positiveTimeout">The positive timeout.</param>
         /// <param name="pollingPeriod">The polling time.</param>
-        void WaitFor<T>(Func<T> function, Predicate<T> condition, string expectationText, TimeSpan pollingPeriod, TimeSpan negativeTimeout, TimeSpan positiveTimeout);
+        void WaitFor<T>(Func<T> function, Predicate<T> condition, string expectationText, TimeSpan negativeTimeout, TimeSpan positiveTimeout, TimeSpan pollingPeriod);
     }
 }
