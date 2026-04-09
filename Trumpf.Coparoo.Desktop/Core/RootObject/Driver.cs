@@ -15,21 +15,30 @@
 namespace Trumpf.Coparoo.Desktop.Core
 {
     using SmartBear.TestLeft;
+    using System.Windows.Forms;
 
     /// <summary>
     /// The single TestExecute driver.
     /// </summary>
-    internal static class Driver
+    public static class Driver
     {
         private static IDriver driver;
 
         /// <summary>
         /// Gets or sets the TestExecute driver.
         /// </summary>
-        public static IDriver Value
+        internal static IDriver Value
         {
             get { return driver ?? (driver = DefaultDriver); }
             set { driver = value; }
+        }
+
+        /// <summary>
+        /// Resets 
+        /// </summary>
+        public static void DisposeOldDriver()
+        {
+            driver = null;
         }
 
         /// <summary>
