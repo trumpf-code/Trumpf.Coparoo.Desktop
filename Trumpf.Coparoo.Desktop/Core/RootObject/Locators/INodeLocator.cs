@@ -29,6 +29,13 @@ namespace Trumpf.Coparoo.Desktop.Core
         void Clear();
 
         /// <summary>
+        /// Remove the registered node for the given hash code.
+        /// </summary>
+        /// <param name="hash">The hash.</param>
+        /// <returns>Whether a registered object was removed.</returns>
+        bool Remove(int hash);
+
+        /// <summary>
         /// Register the node object type with the given hash code.
         /// </summary>
         /// <param name="hash">The hash.</param>

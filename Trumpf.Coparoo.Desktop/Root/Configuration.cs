@@ -36,6 +36,9 @@ namespace Trumpf.Coparoo.Desktop
         private Action<string> logAction = null;
         private int nodeSearchDepth = 20;
         private int controlSearchDepth = 20;
+        private bool enableStaleObjectRecovery = true;
+        private int staleObjectRecoveryRetries = 1;
+        private TimeSpan staleObjectRecoveryDelay = TimeSpan.FromMilliseconds(250);
         internal CompactClassResolverContainer resolver = new CompactClassResolverContainer();
 
         /// <summary>
@@ -132,6 +135,33 @@ namespace Trumpf.Coparoo.Desktop
         {
             get { return enableAutoGoto; }
             set { enableAutoGoto = value; }
+        }
+
+        /// <summary>
+        /// Gets or set a value indicating whether Coparoo should retry read-only operations and goto after a stale TestLeft object node was detected.
+        /// </summary>
+        public bool EnableStaleObjectRecovery
+        {
+            get { return enableStaleObjectRecovery; }
+            set { enableStaleObjectRecovery = value; }
+        }
+
+        /// <summary>
+        /// Gets or set the number of retry attempts after stale TestLeft object nodes were detected.
+        /// </summary>
+        public int StaleObjectRecoveryRetries
+        {
+            get { return staleObjectRecoveryRetries; }
+            set { staleObjectRecoveryRetries = Math.Max(0, value); }
+        }
+
+        /// <summary>
+        /// Gets or set the delay between stale object recovery attempts.
+        /// </summary>
+        public TimeSpan StaleObjectRecoveryDelay
+        {
+            get { return staleObjectRecoveryDelay; }
+            set { staleObjectRecoveryDelay = value < TimeSpan.Zero ? TimeSpan.Zero : value; }
         }
 
         /// <summary>

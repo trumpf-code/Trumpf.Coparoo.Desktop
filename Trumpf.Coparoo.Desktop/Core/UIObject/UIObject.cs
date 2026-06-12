@@ -254,9 +254,48 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The target page object.</returns>
         public TPageObject Goto<TPageObject>(Predicate<TPageObject> condition) where TPageObject : IPageObject
         {
-            TPageObject r = On(condition);
-            r.Goto();
-            return r;
+            var configuration = this.RootInternal().Configuration;
+
+            if (!configuration.EnableStaleObjectRecovery)
+            {
+                TPageObject r = On(condition);
+                r.Goto();
+                return r;
+            }
+
+            for (int attempt = 0; ; attempt++)
+            {
+                TPageObject r = default(TPageObject);
+
+                try
+                {
+                    r = On(condition);
+                    r.Goto();
+                    return r;
+                }
+                catch (InvocationException e) when (StaleObjectRecovery.IsStaleObjectException(e) && attempt < configuration.StaleObjectRecoveryRetries)
+                {
+                    InvalidatePath(r);
+                    InvalidatePath(this);
+                    StaleObjectRecovery.Log(configuration, $"Coparoo stale object recovery for Goto<{typeof(TPageObject).Name}> attempt {attempt + 1}/{configuration.StaleObjectRecoveryRetries}: invalidated page object path and retry navigation. Original error: {e.Message}");
+                    Thread.Sleep(configuration.StaleObjectRecoveryDelay);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Invalidate cached nodes along an UI object path.
+        /// </summary>
+        /// <param name="source">The object whose path should be invalidated.</param>
+        private static void InvalidatePath(IUIObject source)
+        {
+            IUIObject current = source;
+
+            while (current != null)
+            {
+                (current as IUIObjectInternal)?.TryUnsnap();
+                current = current.Parent;
+            }
         }
 
         /// <inheritdoc/>

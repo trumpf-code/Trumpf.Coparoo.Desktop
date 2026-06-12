@@ -37,6 +37,16 @@ namespace Trumpf.Coparoo.Desktop.Core
         }
 
         /// <summary>
+        /// Remove the registered node for the given hash code.
+        /// </summary>
+        /// <param name="hash">The hash.</param>
+        /// <returns>Whether a registered object was removed.</returns>
+        public bool Remove(int hash)
+        {
+            return cache.Remove(hash);
+        }
+
+        /// <summary>
         /// Register the page object type with the given object.
         /// </summary>
         /// <param name="hash">The object hash.</param>

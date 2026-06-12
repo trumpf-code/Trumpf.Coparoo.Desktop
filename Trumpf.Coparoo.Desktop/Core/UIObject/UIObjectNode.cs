@@ -267,9 +267,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <inheritdoc/>
         public bool TryUnsnap()
         {
-            var before = mNode;
-            mNode = null;
-            return before != mNode;
+            return InvalidateCachedNode();
         }
 
         /// <summary>
@@ -292,7 +290,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The control or null.</returns>
         public TControl Find<TControl>(ISearchPattern pattern, int depth) where TControl : class, IObjectTreeNode
         {
-            return Root.Find<TControl>(pattern, depth);
+            return ExecuteReadWithStaleRecovery(() => Root.Find<TControl>(pattern, depth), nameof(Find));
         }
 
         /// <summary>
@@ -317,7 +315,10 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>Whether the control was found.</returns>
         public bool TryFind<TControl>(ISearchPattern pattern, out TControl result, int depth) where TControl : class, IObjectTreeNode
         {
-            return Root.TryFind(pattern, depth, 0, out result);
+            TControl localResult = null;
+            bool found = ExecuteReadWithStaleRecovery(() => Root.TryFind(pattern, depth, 0, out localResult), nameof(TryFind));
+            result = localResult;
+            return found;
         }
 
         /// <summary>
@@ -340,7 +341,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The controls.</returns>
         public IReadOnlyList<TControl> FindAll<TControl>(ISearchPattern pattern, int depth) where TControl : class, IObjectTreeNode
         {
-            return Root.MyFindAll<TControl>(pattern, depth);
+            return ExecuteReadWithStaleRecovery(() => Root.MyFindAll<TControl>(pattern, depth), nameof(FindAll));
         }
 
         /// <summary>
@@ -350,7 +351,46 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>An object of the interface.</returns>
         public T Cast<T>() where T : class
         {
-            return Root.Cast<T>();
+            return ExecuteReadWithStaleRecovery(() => Root.Cast<T>(), nameof(Cast));
+        }
+
+        /// <summary>
+        /// Invalidate locally and globally cached node references for this object.
+        /// </summary>
+        /// <returns>Whether any cached state was removed.</returns>
+        private bool InvalidateCachedNode()
+        {
+            var before = mNode;
+            bool hadMatches = matches != null;
+
+            mNode = null;
+            matches = null;
+
+            bool removed = ((IRootObjectNodeInternal)RootNode).NodeLocator.Remove(GetHashCode());
+            return before != null || hadMatches || removed;
+        }
+
+        /// <summary>
+        /// Execute a read-only TestLeft operation and retry once after invalidating a stale node.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="action">The read-only action.</param>
+        /// <param name="operationName">The operation name for diagnostics.</param>
+        /// <returns>The action result.</returns>
+        private T ExecuteReadWithStaleRecovery<T>(Func<T> action, string operationName)
+        {
+            var configuration = RootNode.Configuration;
+
+            try
+            {
+                return action();
+            }
+            catch (InvocationException e) when (configuration.EnableStaleObjectRecovery && StaleObjectRecovery.IsStaleObjectException(e))
+            {
+                InvalidateCachedNode();
+                StaleObjectRecovery.Log(configuration, $"Coparoo stale object recovery for {GetType().Name}.{operationName}: invalidated cached node and retry read operation once. Original error: {e.Message}");
+                return action();
+            }
         }
 
         /// <summary>
@@ -375,6 +415,11 @@ namespace Trumpf.Coparoo.Desktop.Core
 
             if (!visibleOnScreen)
             {
+                if (cached)
+                {
+                    InvalidateCachedNode();
+                }
+
                 // find node
                 node = findNode();
 
@@ -416,7 +461,7 @@ namespace Trumpf.Coparoo.Desktop.Core
         /// <returns>The value.</returns>
         public T GetProperty<T>(string name, params object[] parameters)
         {
-            return Root.GetProperty<T>(name, parameters);
+            return ExecuteReadWithStaleRecovery(() => Root.GetProperty<T>(name, parameters), name);
         }
 
         /// <summary>
