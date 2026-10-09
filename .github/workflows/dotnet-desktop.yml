@@ -2,7 +2,10 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - '**'
+    tags:
+      - '**'
   pull_request:
     branches: [ "master" ]
 
@@ -43,10 +46,10 @@ jobs:
     - name: Build
       run: dotnet build ${{ env.Solution_Name }} --configuration ${{ matrix.configuration }}
 
-    # Execute unit tests (continue on error to allow test results upload if failed)
+    # Execute unit tests
     - name: Execute Unit Tests
       if: matrix.configuration == 'Debug'
-      continue-on-error: true
+      continue-on-error: false
       run: |
         mkdir -p ${{ env.Test_Results_Dir }}
         dotnet test ${{ env.Test_Project_Path }} --configuration ${{ matrix.configuration }} --verbosity normal --logger "trx;LogFileName=${{ env.Test_Results_Dir }}\test_result_${{ matrix.configuration }}.trx"
@@ -58,19 +61,29 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: test-results
-        path: ${{ env.Test_Results_Dir }}\test_result_${{ matrix.configuration }}.trx
+        name: test-results-${{ matrix.configuration }}
+        path: ${{ env.Test_Results_Dir }}\*.trx
 
     # Generate NuGet package in Release configuration only if all steps succeed
     - name: Generate NuGet Package
       if: matrix.configuration == 'Release' && success()
       run: |
         dotnet pack ${{ env.Solution_Name }} --configuration Release --no-build --output ${{ env.Package_Output_Dir }}
+        echo "Listing NuGet packages:"
+        dir ${{ env.Package_Output_Dir }}
 
-    # Upload the NuGet package as an artifact
+    # Upload the NuGet packages as artifacts
     - name: Upload NuGet Package
-      if: matrix.configuration == 'Release' && success() && startsWith(github.ref, 'refs/tags/')
+      if: matrix.configuration == 'Release' && success()
       uses: actions/upload-artifact@v4
       with:
-        name: nuget-package
+        name: nuget-packages
         path: ${{ env.Package_Output_Dir }}\*.nupkg
+
+    # Push NuGet packages to nuget.org (only on tag pushes)
+    - name: Push NuGet Packages to nuget.org
+      if: matrix.configuration == 'Release' && success() && startsWith(github.ref, 'refs/tags/')
+      run: |
+        dotnet nuget push "${{ env.Package_Output_Dir }}\*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

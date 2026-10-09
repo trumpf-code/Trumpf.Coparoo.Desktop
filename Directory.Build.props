@@ -1,0 +1,23 @@
+<Project>
+  <!-- Only the library project is packed, so only it needs MinVer -->
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'Trumpf.Coparoo.Desktop'">
+    <!-- MinVer package for automatic Git-based versioning -->
+    <PackageReference Include="MinVer" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Trumpf.Coparoo.Desktop'">
+    <!-- MinVer configuration for automatic versioning from Git tags (tags have no prefix, e.g. 1.7.0 or 1.7.0-beta.1) -->
+    <MinVerTagPrefix></MinVerTagPrefix>
+    <MinVerDefaultPreReleaseIdentifiers>preview</MinVerDefaultPreReleaseIdentifiers>
+    <MinVerMinimumMajorMinor>1.7</MinVerMinimumMajorMinor>
+    <MinVerVerbosity>normal</MinVerVerbosity>
+  </PropertyGroup>
+
+  <!-- An explicitly passed version (e.g. -p:Version=1.7.0.1 by a consuming pipeline or a parent repository using this one as submodule) takes precedence over MinVer -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Trumpf.Coparoo.Desktop' And ('$(Version)' != '' Or '$(PackageVersion)' != '')">
+    <MinVerSkip>true</MinVerSkip>
+  </PropertyGroup>
+</Project>
