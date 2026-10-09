@@ -49,6 +49,23 @@ The following example shows a simple test of the `DemoApp` test project; source 
     app.On<IMainWindow>().IncrementButton.Text.WaitFor(text => text == "0", "Text is '0'");
 ```
 
+### Asynchronous page tests
+Page tests (methods marked with `[PageTest]`) may return `Task` or `Task<T>`. Run them with `TestAsync()` or `TestBottomUpAsync()`; the returned task completes after all page tests have finished. Page tests are executed one after the other.
+```
+    public class MainWindowTests : PageObjectTests<IMainWindow>
+    {
+        [PageTest]
+        public async Task Reset()
+        {
+            await Task.Delay(100);
+            Page.ResetButton.Click();
+        }
+    }
+
+    await app.On<IMainWindow>().TestAsync();
+```
+The synchronous `Test()` and `TestBottomUp()` throw a `NotSupportedException` if they encounter a page test that returns `Task` or is declared `async void`, or a test class that overrides `BeforeFirstTestAsync`/`AfterLastTestAsync`. Use the asynchronous runner in these cases. `PageObjectTests<T>` offers the virtual methods `BeforeFirstTestAsync` and `AfterLastTestAsync`, which call their synchronous counterparts by default.
+
 ## Contributors
 Main development by Alexander Kaiser (alexander.kai...@trumpf.com or alexander.kai...@cs.ox.ac.uk).
 

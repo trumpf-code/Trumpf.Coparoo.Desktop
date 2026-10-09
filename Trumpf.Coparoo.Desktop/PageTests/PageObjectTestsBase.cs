@@ -16,6 +16,7 @@ namespace Trumpf.Coparoo.Desktop.PageTests
 {
     using System;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     using Coparoo.Desktop;
     using Trumpf.Coparoo.Desktop.Core;
@@ -74,6 +75,30 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// </summary>
         public virtual void AfterLastTest()
         {
+        }
+
+        /// <summary>
+        /// Function to execute before the first test when the tests are run via the asynchronous runner.
+        /// Default: calls <see cref="BeforeFirstTest"/>.
+        /// Overriding this method requires running the tests via <c>TestAsync</c> or <c>TestBottomUpAsync</c>.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        public virtual Task BeforeFirstTestAsync()
+        {
+            BeforeFirstTest();
+            return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Function to execute after the last test when the tests are run via the asynchronous runner.
+        /// Default: calls <see cref="AfterLastTest"/>.
+        /// Overriding this method requires running the tests via <c>TestAsync</c> or <c>TestBottomUpAsync</c>.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        public virtual Task AfterLastTestAsync()
+        {
+            AfterLastTest();
+            return Task.FromResult(0);
         }
 
         /// <summary>

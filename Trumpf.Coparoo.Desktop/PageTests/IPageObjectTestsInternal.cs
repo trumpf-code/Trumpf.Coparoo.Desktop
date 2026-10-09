@@ -15,6 +15,7 @@
 namespace Trumpf.Coparoo.Desktop.PageTests
 {
     using System.Reflection;
+    using System.Threading.Tasks;
 
     using Coparoo.Desktop;
 
@@ -35,5 +36,17 @@ namespace Trumpf.Coparoo.Desktop.PageTests
         /// <param name="pageTest">The page test method info.</param>
         /// <returns>Whether the given page test method shall be executed.</returns>
         bool IsTestRunnable(MethodInfo pageTest);
+
+        /// <summary>
+        /// Function to execute before the first test when running asynchronously.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        Task BeforeFirstTestAsync();
+
+        /// <summary>
+        /// Function to execute after the last test when running asynchronously.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        Task AfterLastTestAsync();
     }
 }
