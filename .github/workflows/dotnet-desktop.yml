@@ -15,6 +15,9 @@ jobs:
       matrix:
         configuration: [Debug, Release]
     runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write
     env:
       Solution_Name: Trumpf.Coparoo.Desktop.sln
       Test_Project_Path: Trumpf.Coparoo.Desktop.Tests\Trumpf.Coparoo.Desktop.Tests.csproj
@@ -80,10 +83,16 @@ jobs:
         name: nuget-packages
         path: ${{ env.Package_Output_Dir }}\*.nupkg
 
+    # Request a short-lived NuGet API key via OIDC (Trusted Publishing, only on tag pushes)
+    - name: NuGet login (OIDC)
+      id: login
+      if: matrix.configuration == 'Release' && success() && startsWith(github.ref, 'refs/tags/')
+      uses: NuGet/login@v1
+      with:
+        user: Arthur_Schwan
+
     # Push NuGet packages to nuget.org (only on tag pushes)
     - name: Push NuGet Packages to nuget.org
       if: matrix.configuration == 'Release' && success() && startsWith(github.ref, 'refs/tags/')
       run: |
-        dotnet nuget push "${{ env.Package_Output_Dir }}\*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
-      env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget push "${{ env.Package_Output_Dir }}\*.nupkg" --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
